@@ -1,13 +1,10 @@
-import { Component } from "react";
+import Registration from "../Registration/Registration";
 
-class Welcome extends Component {
-    render() {
-        return (
-            <>
-                <span>Welcome</span>
-            </>
-        );
-    }
+export default function Welcome() {
+    return (
+        <div>
+            <h1>Welcome to my SN! This will be our logged out e</h1>
+            <Registration />
+        </div>
+    );
 }
-
-export default Welcome;
