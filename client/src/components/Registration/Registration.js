@@ -1,4 +1,4 @@
-import { Component, Link } from "react";
+import { Component } from "react";
 import "../Registration/Registration.css";
 
 export default class Registration extends Component {

@@ -62,6 +62,12 @@ export default class ResetPassword extends Component {
             });
     }
 
+    redirectLogin() {
+        setTimeout(function () {
+            window.location.href = "/login";
+        }, 3000);
+    }
+
     currentView() {
         if (this.state.view === 1) {
             return (
@@ -99,8 +105,11 @@ export default class ResetPassword extends Component {
             return (
                 <>
                     {this.state.error && <p className="error">Error</p>}
-                    <p>Your Password has been successfully reset.</p>
-                    <a href="/login">Login Again</a>
+                    <p>
+                        Your Password has been successfully reset.Please wait 3
+                        seconds.You are redirecting....
+                    </p>
+                    {this.redirectLogin()}
                 </>
             );
         }
