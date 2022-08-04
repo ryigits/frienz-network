@@ -4,6 +4,8 @@ const compression = require("compression");
 const path = require("path");
 const db = require("./db");
 const bcrypt = require("./bcrypt");
+const cryptoRandomString = require("crypto-random-string");
+const ses = require("./ses");
 // const { userLogIn, userLogOut } = require("./middleware");
 app.use(express.json());
 
@@ -57,6 +59,35 @@ app.post("/register.json", (req, res) => {
                     success: false,
                 });
             });
+    });
+});
+
+app.post("/sendCodeBeforeResetPassword", (req, res) => {
+    const { email } = req.body;
+    const code = cryptoRandomString({ length: 4 });
+
+    db.addCodeIntoDb(email, code).then(() => {
+        ses.sendCodeToEmail(code, email).then(() => {
+            res.json({
+                email: email,
+                code: code,
+            });
+        });
+    });
+});
+
+app.post("/resetPasswordWithCode", (req, res) => {
+    const { code, newPassword, email } = req.body;
+    db.getCodesFromDb().then((codes) => {
+        if (codes.rows.map((item) => item.code).includes(code)) {
+            bcrypt.hash(newPassword).then((password_hash) => {
+                db.changePasswordByEmail(email, password_hash).then(() => {
+                    res.json({
+                        success: true,
+                    });
+                });
+            });
+        }
     });
 });
 

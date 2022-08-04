@@ -10,7 +10,10 @@ fetch("/user/id.json")
         } else {
             // this means the user is registered cause their browser DID have the right cookie and they should be seeing a logo
             ReactDOM.render(
-                <img src="/spiced-logo.svg" alt="logo" />,
+                <img
+                    src="https://images.unsplash.com/photo-1659424864086-468b4eaa57bb?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=327&q=80"
+                    alt="logo"
+                />,
                 document.querySelector("main")
             );
         }

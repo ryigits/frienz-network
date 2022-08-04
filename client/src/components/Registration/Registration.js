@@ -1,4 +1,4 @@
-import { Component } from "react";
+import { Component, Link } from "react";
 import "../Registration/Registration.css";
 
 export default class Registration extends Component {
@@ -44,6 +44,7 @@ export default class Registration extends Component {
                 // TODO:
                 // if registration was NOT successful -> render err conditionally
                 // if registration WAS successful -> reload the page! trigger page reload to rerun start.js and we shoiuld end up se
+                location.reload();
             })
             .catch((err) => {
                 // if something goes wrong => render an error

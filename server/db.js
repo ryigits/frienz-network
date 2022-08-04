@@ -71,10 +71,27 @@ module.exports.deleteUser = (id) => {
     );
 };
 
-module.exports.changePassword = (id, newPassword_hash) => {
+module.exports.changePasswordByEmail = (email, newPassword_hash) => {
     return db.query(
         `
-        UPDATE users SET password_hash=$2 WHERE id=$1`,
-        [id, newPassword_hash]
+        UPDATE users SET password_hash=$2 WHERE email=$1`,
+        [email, newPassword_hash]
+    );
+};
+
+module.exports.addCodeIntoDb = (email, code) => {
+    return db.query(
+        `
+        INSERT INTO reset_codes(email,code)
+        VALUES ($1,$2)`,
+        [email, code]
+    );
+};
+
+module.exports.getCodesFromDb = () => {
+    return db.query(
+        `
+        SELECT * FROM reset_codes WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'
+        `
     );
 };
