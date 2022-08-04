@@ -91,8 +91,29 @@ app.post("/resetPasswordWithCode", (req, res) => {
     });
 });
 
+app.post("/login", (req, res) => {
+    const { email, password } = req.body;
+    db.authUser(email, password).then((result) => {
+        if (result) {
+            db.getUserByEmail(email).then((user) => {
+                req.session.id = user.id;
+                res.json({
+                    success: true,
+                });
+            });
+        }
+    });
+});
+
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
+});
+
+app.get("/logout", (req, res) => {
+    req.session = null;
+    res.json({
+        logout: true,
+    });
 });
 
 app.listen(process.env.PORT || 3001, function () {

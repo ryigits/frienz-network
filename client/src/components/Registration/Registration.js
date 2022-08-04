@@ -54,7 +54,6 @@ export default class Registration extends Component {
     render() {
         return (
             <div>
-                <h1>This is the registration component</h1>
                 {this.state.error && (
                     <p className="error">oops! something went wrong!</p>
                 )}
@@ -82,7 +81,7 @@ export default class Registration extends Component {
                     placeholder="password"
                     onChange={(e) => this.handleChange(e)}
                 />
-                <button onClick={() => this.handleSubmit()}>Submit</button>
+                <button onClick={() => this.handleSubmit()}>Register</button>
             </div>
         );
     }

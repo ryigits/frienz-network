@@ -24,7 +24,6 @@ export default class ResetPassword extends Component {
     }
 
     handleSubmit() {
-        console.log(this.state);
         fetch("/sendCodeBeforeResetPassword", {
             method: "POST",
             headers: {
@@ -86,6 +85,7 @@ export default class ResetPassword extends Component {
             return (
                 <>
                     {this.state.error && <p className="error">Error</p>}
+                    
                     <input
                         type="text"
                         name="code"
