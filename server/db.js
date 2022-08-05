@@ -27,15 +27,10 @@ module.exports.addUser = (first_name, last_name, email, password) => {
         .then((returning) => {
             let id = returning.rows[0].id;
             return db.query(
-                `INSERT INTO profiles(city,age,user_id) VALUES (DEFAULT,DEFAULT,$1) RETURNING  user_id`,
+                `INSERT INTO profiles(profilepic,age,user_id) VALUES (DEFAULT,DEFAULT,$1) RETURNING  user_id`,
                 [id]
             );
         });
-};
-
-module.exports.getAllUsers = () => {
-    return db.query(`SELECT users.first_name,users.last_name,profiles.city,profiles.age
-FROM users LEFT OUTER JOIN profiles ON users.id=profiles.user_id;`);
 };
 
 module.exports.getUserByEmail = (email) => {
@@ -63,14 +58,6 @@ module.exports.authUser = (email, password) => {
         .catch(() => false);
 };
 
-module.exports.deleteUser = (id) => {
-    return db.query(
-        `
-        DELETE FROM users WHERE id=$1`,
-        [id]
-    );
-};
-
 module.exports.changePasswordByEmail = (email, newPassword_hash) => {
     return db.query(
         `
@@ -94,4 +81,19 @@ module.exports.getCodesFromDb = () => {
         SELECT * FROM reset_codes WHERE CURRENT_TIMESTAMP - created_at < INTERVAL '10 minutes'
         `
     );
+};
+
+module.exports.getProfileById = (id) => {
+    return db.query(`SELECT * FROM profiles WHERE user_id=$1;`, [id]);
+};
+
+module.exports.addProfilePic = (id, url) => {
+    return db.query(`UPDATE profiles SET profilepic=$2 WHERE user_id=$1;`, [
+        id,
+        url,
+    ]);
+};
+
+module.exports.getUserById = (id) => {
+    return db.query(`SELECT * FROM users WHERE id=$1;`, [id]);
 };

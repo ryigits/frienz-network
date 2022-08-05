@@ -6,6 +6,8 @@ const db = require("./db");
 const bcrypt = require("./bcrypt");
 const cryptoRandomString = require("crypto-random-string");
 const ses = require("./ses");
+const { uploader } = require("./multer");
+const s3 = require("./s3");
 // const { userLogIn, userLogOut } = require("./middleware");
 app.use(express.json());
 
@@ -38,6 +40,19 @@ app.use(express.static(path.join(__dirname, "..", "client", "public")));
 app.get("/user/id.json", function (req, res) {
     res.json({
         userId: req.session.id,
+    });
+});
+
+app.get("/profile", function (req, res) {
+    db.getUserById(req.session.id).then((userData) => {
+        const { first_name, last_name } = userData.rows[0];
+        db.getProfileById(req.session.id).then((userData) => {
+            res.json({
+                first:first_name,
+                last:last_name,
+                pic:userData.rows[0].profilepic
+            });
+        });
     });
 });
 
@@ -103,6 +118,17 @@ app.post("/login", (req, res) => {
             });
         }
     });
+});
+
+app.post("/image", uploader.single("photo"), s3.upload, (req, res) => {
+    const url = `https://frienznetwork.s3.amazonaws.com/${req.file.filename}`;
+    if (req.file) {
+        db.addProfilePic(req.session.id, url).then(() => {
+            res.json({
+                success: true,
+            });
+        });
+    }
 });
 
 app.get("*", function (req, res) {

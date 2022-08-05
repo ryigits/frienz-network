@@ -1,17 +1,8 @@
 body {
-    background-color: ghostwhite;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: max-content;
+    background-color: #f6f6e9;
 }
 
 main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     height: 400px;
 }
 
