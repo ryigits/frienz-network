@@ -1,5 +1,4 @@
 import { Component } from "react";
-import "../Uploader/Uploader.css";
 
 class Uploader extends Component {
     constructor(props) {

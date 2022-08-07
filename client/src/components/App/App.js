@@ -2,7 +2,6 @@ import { Component } from "react";
 import Logo from "../Logo/Logo";
 import ProfilePic from "../ProfilePic/ProfilePic";
 import Uploader from "../Uploader/Uploader";
-// import "../App/App.css";
 
 class App extends Component {
     constructor(props) {
@@ -33,21 +32,26 @@ class App extends Component {
         this.setState({ isUploaderOpen: !this.state.isUploaderOpen });
     }
 
-    changeProfilePic(){
-
-    }
 
     render() {
         return (
             <>
-                <Logo />
-                <ProfilePic
-                    first={"Yigit"}
-                    last={"Sezginer"}
-                    pic={this.state.pic}
-                    showUploader={this.showUploader}
-                />
-                {this.state.isUploaderOpen && <Uploader />}
+                <div className="w-full h-screen bg-orange-200">
+                    <div className="flex justify-around content-around">
+                        <div className="w-40">
+                            <Logo />
+                        </div>
+                        <div>
+                            <ProfilePic
+                                first={"Yigit"}
+                                last={"Sezginer"}
+                                pic={this.state.pic}
+                                showUploader={this.showUploader}
+                            />
+                            {this.state.isUploaderOpen && <Uploader />}
+                        </div>
+                    </div>
+                </div>
             </>
         );
     }

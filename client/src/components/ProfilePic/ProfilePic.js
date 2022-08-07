@@ -1,5 +1,3 @@
-import "../ProfilePic/ProfilePic.css";
-
 export default function ProfilePic({ first, last, pic, showUploader }) {
     return (
         <>
