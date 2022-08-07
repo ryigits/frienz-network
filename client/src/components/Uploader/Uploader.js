@@ -17,14 +17,6 @@ class Uploader extends Component {
     componentDidMount() {
         this.setState({ display: "modalOpen" });
     }
-    handleChange(e) {
-        this.setState(
-            {
-                [e.target.name]: e.target.value,
-            },
-            () => console.log("this.state: ", this.state)
-        );
-    }
 
     handleSubmit(e) {
         e.preventDefault();
@@ -37,11 +29,8 @@ class Uploader extends Component {
             body: formData,
         })
             .then((result) => result.json())
-            .then((data) => {
-                console.log('%cUploader.js line:41 data', 'color: #007acc;', data);
-            })
-            .catch((err) => {
-                this.status = err.status;
+            .then(() => {
+                this.setState({ display: "modal" });
             });
     }
 

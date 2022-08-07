@@ -33,6 +33,10 @@ class App extends Component {
         this.setState({ isUploaderOpen: !this.state.isUploaderOpen });
     }
 
+    changeProfilePic(){
+
+    }
+
     render() {
         return (
             <>
