@@ -50,7 +50,7 @@ app.get("/profile", function (req, res) {
             res.json({
                 first:first_name,
                 last:last_name,
-                pic:userData.rows[0].profilepic
+                url:userData.rows[0].profilepic
             });
         });
     });
@@ -126,6 +126,7 @@ app.post("/image", uploader.single("photo"), s3.upload, (req, res) => {
         db.addProfilePic(req.session.id, url).then(() => {
             res.json({
                 success: true,
+                url:url
             });
         });
     }

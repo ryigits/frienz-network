@@ -7,17 +7,19 @@ import { useState, useEffect } from "react";
 export default function App() {
     const [userProfile, setUserProfile] = useState({});
     const [isUploaderOpen, setIsUploaderOpen] = useState(false);
+    const [userProfilePic, setUserProfilePic] = useState("");
 
     useEffect(() => {
         fetch("/profile")
             .then((data) => data.json())
             .then((userData) => {
                 setUserProfile(userData);
+                setUserProfilePic(userData.url);
             });
-    },[]);
+    }, []);
 
-    const showUploader = ()=>{
-        setIsUploaderOpen(true);
+    const showUploader = () => {
+        setIsUploaderOpen(isUploaderOpen === false ? true : false);
     };
 
     return (
@@ -30,10 +32,17 @@ export default function App() {
                         </div>
                         <div>
                             <ProfilePic
-                                userProfile={userProfile}
+                                userProfilePic={userProfilePic}
                                 showUploader={showUploader}
                             />
-                            {isUploaderOpen && <Uploader />}
+                            <div className="ml-4">
+                                {isUploaderOpen && (
+                                    <Uploader
+                                        showUploader={showUploader}
+                                        setUserProfilePic={setUserProfilePic}
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

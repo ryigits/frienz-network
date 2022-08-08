@@ -22,7 +22,9 @@ class Uploader extends Component {
         const form = e.currentTarget;
         const fileInput = form.querySelector("input[type=file]");
         if (fileInput.files.length < 1) return alert("you must add a file");
+
         const formData = new FormData(form);
+
         fetch("/image", {
             method: "POST",
             body: formData,

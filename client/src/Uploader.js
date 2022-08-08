@@ -1,29 +1,61 @@
 import React from "react";
-import { Button, Modal, } from "flowbite-react";
+import { useState, useRef } from "react";
+import { Button, Modal } from "flowbite-react";
 
-export default function Uploader() {
-    const onClick = () => {};
+export default function Uploader({ setUserProfilePic, showUploader }) {
+    const [show, setShow] = useState(false);
+    const inputRef = useRef().current;
+    const onClick = () => {
+        setShow(true);
+    };
 
-    const onClose = () => {};
+    const onClose = () => {
+        setShow(false);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const form = e.currentTarget;
+        const fileInput = form.querySelector("input[type=file]");
+        if (fileInput.files.length < 1) return alert("you must add a file");
+        const formData = new FormData(form);
+        fetch("/image", {
+            method: "POST",
+            body: formData,
+        })
+            .then((result) => result.json())
+            .then((data) => {
+                setUserProfilePic(data.url);
+                showUploader();
+                setShow(false);
+            });
+    };
 
     return (
         <React.Fragment>
-            <Button onClick={onClick}>Toggle modal</Button>
-            <Modal show={false} size="md" popup={true} onClose={onClose}>
+            <Button onClick={onClick}>Change Picture</Button>
+            <Modal show={show} size="md" popup={true} onClose={onClose}>
                 <Modal.Header />
                 <Modal.Body>
                     <div className="text-center">
                         <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                            Are you sure you want to delete this product?
+                            <form
+                                ref={inputRef}
+                                encType="multipart/form-data"
+                                onSubmit={handleSubmit}
+                            >
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    name="photo"
+                                />
+                                <input
+                                    type="submit"
+                                    name="button"
+                                    value="submit"
+                                />
+                            </form>
                         </h3>
-                        <div className="flex justify-center gap-4">
-                            <Button color="failure" onClick={onClick}>
-                                Yes, Im sure
-                            </Button>
-                            <Button color="gray" onClick={onClick}>
-                                No, cancel
-                            </Button>
-                        </div>
                     </div>
                 </Modal.Body>
             </Modal>
