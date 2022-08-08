@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { Avatar, Card } from "flowbite-react";
 import Bio from "./Bio";
 
-export default function App({userId}) {
+export default function App() {
     const [userProfile, setUserProfile] = useState({});
     const [isUploaderOpen, setIsUploaderOpen] = useState(false);
     const [userProfilePic, setUserProfilePic] = useState("");
@@ -27,11 +27,11 @@ export default function App({userId}) {
         <div className="w-full h-screen bg-orange-200">
             <nav>
                 <div>
-                    <div className="flex justify-between">
-                        <div className="w-40 ml-2">
+                    <div className="flex justify-between items-center h-52">
+                        <div className="w-60 ml-4">
                             <Logo />
                         </div>
-                        <div className="mr-14 mt-10">
+                        <div className="mr-14 object-center mt-10">
                             <div
                                 className="flex flex-wrap gap-2"
                                 onClick={showUploader}
@@ -39,7 +39,7 @@ export default function App({userId}) {
                                 <Avatar
                                     img={userProfilePic}
                                     rounded={true}
-                                    size="xl"
+                                    size="lg"
                                 />
                             </div>
 

@@ -62,6 +62,14 @@ app.get("/bio", (req, res) => {
     });
 });
 
+app.post("/bio", (req, res) => {
+    console.log('%cserver.js line:66 req.body', 'color: #007acc;', req.body);
+    const { bio } = req.body;
+    db.updateBio(req.session.id, bio).then(() => {
+        res.json({ success: true });
+    });
+});
+
 app.post("/register.json", (req, res) => {
     const { first, last, email, password } = req.body;
 

@@ -8,7 +8,9 @@ class Logo extends Component {
     render() {
         return (
             <>
-                <img src="./Frienz.gif"></img>
+                <div className="object-cover">
+                    <img src="./frienz.png"></img>
+                </div>
             </>
         );
     }

@@ -97,3 +97,10 @@ module.exports.addProfilePic = (id, url) => {
 module.exports.getUserById = (id) => {
     return db.query(`SELECT * FROM users WHERE id=$1;`, [id]);
 };
+
+module.exports.updateBio = (id, bio) => {
+    return db.query(`UPDATE profiles SET bio=$2 WHERE user_id=$1;`, [
+        id,
+        bio,
+    ]);
+};

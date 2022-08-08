@@ -46,9 +46,10 @@ export default function Uploader({ setUserProfilePic, showUploader }) {
                                     type="file"
                                     accept="image/*"
                                     name="photo"
+                                    className="file:ml-10 file:py-2 file:px-4"
                                 />
                                 <input
-                                    className="w-20 border-none text-cyan-700 text-xl hover:cursor-pointer mt-4"
+                                    className="inline-flex items-center rounded-lg bg-blue-700 py-4 px-6 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 mt-10 hover:cursor-pointer"
                                     type="submit"
                                     name="button"
                                     value="Upload"
