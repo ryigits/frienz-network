@@ -1,13 +1,9 @@
-export default function ProfilePic({ first, last, pic, showUploader }) {
+export default function ProfilePic({ userProfile,showUploader }) {
     return (
         <>
-            <img
-                className="profilepic"
-                width="100px"
-                src={pic}
-                alt={last && first}
-                onClick={showUploader}
-            />
+            <div className="w-40" onClick={showUploader}>
+                <img alt={userProfile.first} src={userProfile.pic} />
+            </div>
         </>
     );
 }

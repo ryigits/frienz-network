@@ -1,5 +1,4 @@
 const path = require("path");
-
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = () => ({
@@ -16,7 +15,7 @@ module.exports = () => ({
         hints: false,
     },
     devServer: {
-        contentBase: path.join(__dirname, "client", "public"),
+        static: path.join(__dirname, "client", "public"),
         proxy: {
             "/": {
                 target: "http://localhost:3001",
