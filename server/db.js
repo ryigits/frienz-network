@@ -27,7 +27,7 @@ module.exports.addUser = (first_name, last_name, email, password) => {
         .then((returning) => {
             let id = returning.rows[0].id;
             return db.query(
-                `INSERT INTO profiles(profilepic,age,user_id) VALUES (DEFAULT,DEFAULT,$1) RETURNING  user_id`,
+                `INSERT INTO profiles(profilepic,bio,age,user_id) VALUES (DEFAULT,DEFAULT,DEFAULT,$1) RETURNING  user_id`,
                 [id]
             );
         });

@@ -48,11 +48,17 @@ app.get("/profile", function (req, res) {
         const { first_name, last_name } = userData.rows[0];
         db.getProfileById(req.session.id).then((userData) => {
             res.json({
-                first:first_name,
-                last:last_name,
-                url:userData.rows[0].profilepic
+                first: first_name,
+                last: last_name,
+                url: userData.rows[0].profilepic,
             });
         });
+    });
+});
+
+app.get("/bio", (req, res) => {
+    db.getProfileById(req.session.id).then((profileData) => {
+        res.json(profileData.rows[0]);
     });
 });
 
@@ -126,7 +132,7 @@ app.post("/image", uploader.single("photo"), s3.upload, (req, res) => {
         db.addProfilePic(req.session.id, url).then(() => {
             res.json({
                 success: true,
-                url:url
+                url: url,
             });
         });
     }

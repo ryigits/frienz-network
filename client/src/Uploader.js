@@ -1,13 +1,13 @@
 import React from "react";
-import { useState, useRef } from "react";
-import { Button, Modal } from "flowbite-react";
+import { useState, useEffect } from "react";
+import { Modal } from "flowbite-react";
 
 export default function Uploader({ setUserProfilePic, showUploader }) {
     const [show, setShow] = useState(false);
-    const inputRef = useRef().current;
-    const onClick = () => {
+
+    useEffect(() => {
         setShow(true);
-    };
+    }, []);
 
     const onClose = () => {
         setShow(false);
@@ -33,14 +33,12 @@ export default function Uploader({ setUserProfilePic, showUploader }) {
 
     return (
         <React.Fragment>
-            <Button onClick={onClick}>Change Picture</Button>
             <Modal show={show} size="md" popup={true} onClose={onClose}>
                 <Modal.Header />
                 <Modal.Body>
                     <div className="text-center">
                         <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
                             <form
-                                ref={inputRef}
                                 encType="multipart/form-data"
                                 onSubmit={handleSubmit}
                             >
@@ -50,9 +48,10 @@ export default function Uploader({ setUserProfilePic, showUploader }) {
                                     name="photo"
                                 />
                                 <input
+                                    className="w-20 border-none text-cyan-700 text-xl hover:cursor-pointer mt-4"
                                     type="submit"
                                     name="button"
-                                    value="submit"
+                                    value="Upload"
                                 />
                             </form>
                         </h3>

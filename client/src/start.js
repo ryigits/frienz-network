@@ -13,6 +13,6 @@ fetch("/user/id.json")
             root.render(<Welcome />);
         } else {
             // this means the user is registered cause their browser DID have the right cookie and they should be seeing a logo
-            root.render(<App />);
+            root.render(<App userId={data.userId} />);
         }
     });
