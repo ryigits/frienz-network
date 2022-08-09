@@ -1,3 +1,4 @@
+const plugin = require("./node_modules/tailwindcss/plugin");
 module.exports = {
     content: [
         "./client/src/**/*.{js,jsx}",
@@ -13,5 +14,14 @@ module.exports = {
         },
     },
 
-    plugins: [require("flowbite/plugin")],
+    plugins: [
+        require("flowbite/plugin"),
+        plugin(function ({ addUtilities }) {
+            addUtilities({
+                ".active": {
+                    "color": "#7E22CE",
+                },
+            });
+        }),
+    ],
 };

@@ -38,7 +38,7 @@ export default function FindPeople() {
     return (
         <>
             <div className="flex flex-col justify-center items-center">
-                <div className="text-2xl text-green-700 font-medium py-2 "> {showRecent?(<>Newcomerz Frienz</>):(<>Search Result</>)}</div>
+                <div className="text-2xl self-start ml-10 text-green-700 font-medium py-2 "> {showRecent?(<>Newcomerz Frienz</>):(<>Search Result</>)}</div>
                 <div className="h-120 w-120 flex">
                     {users.length === 0 ? (
                         <div className="w-40">
