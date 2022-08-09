@@ -56,6 +56,20 @@ app.get("/profile", function (req, res) {
     });
 });
 
+app.get("/recentusers", (req, res) => {
+    db.getRecentUsers().then((users) => {
+        res.json(users.rows);
+    });
+});
+
+app.get("/user/:firstName.json", (req, res) => {
+    const { firstName } = req.params;
+
+    db.getSearchUsers(firstName).then((userData) => {
+        res.json(userData.rows);
+    });
+});
+
 app.get("/bio", (req, res) => {
     db.getProfileById(req.session.id).then((profileData) => {
         res.json(profileData.rows[0]);
@@ -63,7 +77,6 @@ app.get("/bio", (req, res) => {
 });
 
 app.post("/bio", (req, res) => {
-    console.log('%cserver.js line:66 req.body', 'color: #007acc;', req.body);
     const { bio } = req.body;
     db.updateBio(req.session.id, bio).then(() => {
         res.json({ success: true });

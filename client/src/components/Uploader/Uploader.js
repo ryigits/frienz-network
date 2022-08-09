@@ -58,3 +58,33 @@ class Uploader extends Component {
 }
 
 export default Uploader;
+
+
+                <nav>
+                    <div>
+                        <div className="flex py-3 justify-between items-center h-40 w-full">
+                            <Link to="/">
+                                <div className="w-40">
+                                    <Logo />
+                                </div>
+                            </Link>
+                            <div className="flex grow place-self-end w-full">
+                                {/* <Link to="/users">FindPeople</Link> */}
+                            </div>
+
+                            <div className="mr-14 object-center mt-10">
+                                <div className="" onClick={showUploader}>
+                                    <Avatar
+                                        img={userProfilePic}
+                                        rounded={true}
+                                        size="lg"
+                                    />
+                                </div>
+
+                                <div className="">
+                                    {isUploaderOpen && }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>;

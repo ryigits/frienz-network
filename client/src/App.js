@@ -2,13 +2,16 @@ import "flowbite";
 import Logo from "./components/Logo/Logo";
 import Uploader from "./Uploader";
 import { useState, useEffect } from "react";
-import { Avatar, Card } from "flowbite-react";
-import Bio from "./Bio";
+import { Avatar, Navbar, Dropdown } from "flowbite-react";
+import Profile from "./Profile";
+import { BrowserRouter, Route, Link,NavLink } from "react-router-dom";
+import FindPeople from "./FindPeople";
 
 export default function App() {
     const [userProfile, setUserProfile] = useState({});
     const [isUploaderOpen, setIsUploaderOpen] = useState(false);
     const [userProfilePic, setUserProfilePic] = useState("");
+    const [currentPage,setCurrentPage]=useState(true);
 
     useEffect(() => {
         fetch("/profile")
@@ -24,56 +27,99 @@ export default function App() {
     };
 
     return (
-        <div className="w-full h-screen bg-orange-200">
-            <nav>
-                <div>
-                    <div className="flex justify-between items-center h-52">
-                        <div className="w-60 ml-4">
-                            <Logo />
-                        </div>
-                        <div className="mr-14 object-center mt-10">
-                            <div
-                                className="flex flex-wrap gap-2"
-                                onClick={showUploader}
-                            >
-                                <Avatar
-                                    img={userProfilePic}
-                                    rounded={true}
-                                    size="lg"
-                                />
-                            </div>
-
-                            <div className="ml-4">
-                                {isUploaderOpen && (
-                                    <Uploader
-                                        showUploader={showUploader}
-                                        setUserProfilePic={setUserProfilePic}
+        <BrowserRouter>
+            <div className="w-full h-screen bg-orange-100">
+                <div className="">
+                    <Navbar fluid={true} rounded={true}>
+                        <Navbar.Brand>
+                            <img
+                                src="./frienz.png"
+                                className="mr-3 h-20 sm:h-9"
+                                alt="Logo"
+                            />
+                            <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
+                                Frienz
+                            </span>
+                        </Navbar.Brand>
+                        <div className="flex md:order-2">
+                            <Dropdown
+                                arrowIcon={false}
+                                inline={true}
+                                label={
+                                    <Avatar
+                                        alt="User settings"
+                                        img={userProfilePic}
+                                        rounded={true}
                                     />
-                                )}
-                            </div>
+                                }
+                            >
+                                <Dropdown.Header>
+                                    <span className="block text-sm font-medium">
+                                        {userProfile.first}
+                                    </span>
+                                    <span className="block truncate text-sm font-medium">
+                                        {userProfile.last}
+                                    </span>
+                                </Dropdown.Header>
+                                <Dropdown.Item>
+                                    <div onMouseDown={showUploader}>
+                                        Change Picture
+                                    </div>
+                                    {isUploaderOpen && (
+                                        <Uploader
+                                            showUploader={showUploader}
+                                            setUserProfilePic={
+                                                setUserProfilePic
+                                            }
+                                        />
+                                    )}
+                                </Dropdown.Item>
+                                <Dropdown.Divider />
+                                <Dropdown.Item>Sign out</Dropdown.Item>
+                            </Dropdown>
+                            <Navbar.Toggle />
                         </div>
-                    </div>
+                        <Navbar.Collapse>
+                            <Navbar.Link>
+                                {/* <Link to="/">Home</Link> */}
+                                <NavLink
+                                    to="/"
+                                    className={({ isActive }) =>
+                                        isActive ? "text-xs" : "text-xl"
+                                    }
+                                >
+                                    Home
+                                </NavLink>
+                            </Navbar.Link>
+                            <Navbar.Link>
+                                <NavLink
+                                    to="/users"
+                                    className={({ isActive }) =>
+                                        isActive ? "text-xs" : "text-xl"
+                                    }
+                                >
+                                    Find People
+                                </NavLink>
+                            </Navbar.Link>
+                        </Navbar.Collapse>
+                    </Navbar>
                 </div>
-            </nav>
-            <section className="bio px-2 w-80">
-                <Card>
-                    <div
-                        className="flex flex-wrap gap-2"
-                        onClick={showUploader}
-                    >
-                        <Avatar img={userProfilePic} size="xl" />
-                    </div>
-                    <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                        <div className="whitespace-normal">
-                            {userProfile.first}<br></br>
-                            {userProfile.last}
+                <section>
+                    <Route exact path="/">
+                        <div className="mt-2">
+                            <Profile
+                                userProfile={userProfile}
+                                userProfilePic={userProfilePic}
+                                showUploader={showUploader}
+                            />
                         </div>
-                    </h5>
-                    <div>
-                        <Bio />
-                    </div>
-                </Card>
-            </section>
-        </div>
+                    </Route>
+                    <Route path="/users">
+                        <FindPeople />
+                    </Route>
+                </section>
+                <footer></footer>
+            </div>
+        </BrowserRouter>
     );
 }

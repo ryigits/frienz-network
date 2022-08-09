@@ -104,3 +104,13 @@ module.exports.updateBio = (id, bio) => {
         bio,
     ]);
 };
+
+module.exports.getRecentUsers = () => {
+    return db.query(`SELECT * FROM users ORDER BY id DESC LIMIT 4;`);
+};
+
+module.exports.getSearchUsers = (first_name) => {
+    return db.query(`SELECT * FROM users WHERE first_name ILIKE $1;`,[first_name+'%']);
+};
+
+
