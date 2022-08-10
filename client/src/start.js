@@ -1,5 +1,5 @@
 import { createRoot } from "react-dom/client";
-import Welcome from "./components/Welcome/Welcome";
+import Welcome from "./Welcome";
 import App from "./App";
 
 const main = document.querySelector("main");

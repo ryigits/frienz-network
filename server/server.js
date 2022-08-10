@@ -159,15 +159,13 @@ app.post("/image", uploader.single("photo"), s3.upload, (req, res) => {
     }
 });
 
-app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "..", "client", "index.html"));
+app.get("/logout", (req, res) => {
+    req.session=null;
+    res.json({logout:true});
 });
 
-app.get("/logout", (req, res) => {
-    req.session = null;
-    res.json({
-        logout: true,
-    });
+app.get("*", function (req, res) {
+    res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
 app.listen(process.env.PORT || 3001, function () {

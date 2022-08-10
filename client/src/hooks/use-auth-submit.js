@@ -18,7 +18,7 @@ export default function useAuthSubmit(url, values) {
                 if (!data.success && data.message) {
                     setError(data.message);
                 } else {
-                    location.reload();
+                    location.replace("/");
                 }
             })
             .catch((err) => {

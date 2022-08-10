@@ -2,12 +2,7 @@
 import "flowbite";
 import Uploader from "./Uploader";
 import { useState, useEffect } from "react";
-import {
-    Avatar,
-    Navbar,
-    Dropdown,
-    Flowbite,
-} from "flowbite-react";
+import { Avatar, Navbar, Dropdown, Flowbite } from "flowbite-react";
 import Profile from "./Profile";
 import { BrowserRouter, Route, Link, NavLink } from "react-router-dom";
 import FindPeople from "./FindPeople";
@@ -17,6 +12,22 @@ export default function App() {
     const [isUploaderOpen, setIsUploaderOpen] = useState(false);
     const [userProfilePic, setUserProfilePic] = useState("");
 
+    const onLogout = (e) => {
+        e.preventDefault();
+        fetch("/logout", {
+            method: "get",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((resp) => resp.json())
+            .then(() => {
+                location.replace("/");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
 
     useEffect(() => {
         fetch("/profile")
@@ -31,31 +42,30 @@ export default function App() {
         setIsUploaderOpen(isUploaderOpen === false ? true : false);
     };
 
-    return (
-        <Flowbite
-            theme={{
-                theme: {
-                    navbar: {
-                        base: "bg-orange-200 px-2 py-2.5 dark:border-gray-700 dark:bg-gray-800 sm:px-4",
-                        link: {
-                            base: "block text-lg py-2 pr-4 pl-3 md:p-0",
-                            active: {
-                                on: "bg-purple-700 text-white dark:text-white md:bg-transparent md:text-purple-700",
-                                off: "border-b border-gray-100  text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-purple-700 md:dark:hover:bg-transparent md:dark:hover:text-white",
-                            },
-                            disabled: {
-                                on: "text-gray-400 hover:cursor-not-allowed dark:text-gray-600",
-                                off: "",
-                            },
-                        },
+    const theme = {
+        theme: {
+            navbar: {
+                base: "bg-orange-200 px-2 py-2.5 dark:border-gray-700 dark:bg-gray-800 sm:px-4",
+                link: {
+                    base: "block text-lg py-2 pr-4 pl-3 md:p-0",
+                    active: {
+                        on: "bg-purple-700 text-white dark:text-white md:bg-transparent md:text-purple-700",
+                        off: "border-b border-gray-100  text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:border-0 md:hover:bg-transparent md:hover:text-purple-700 md:dark:hover:bg-transparent md:dark:hover:text-white",
+                    },
+                    disabled: {
+                        on: "text-gray-400 hover:cursor-not-allowed dark:text-gray-600",
+                        off: "",
                     },
                 },
-            }}
-        >
+            },
+        },
+    };
+    return (
+        <Flowbite theme={theme}>
             <BrowserRouter>
                 <div className="w-full h-screen bg-orange-200">
                     <div className="">
-                        <Navbar fluid={true} rounded={true}>
+                        <Navbar>
                             <Navbar.Brand>
                                 <Link to="/">
                                     <img
@@ -103,13 +113,14 @@ export default function App() {
                                         )}
                                     </Dropdown.Item>
                                     <Dropdown.Divider />
-                                    <Dropdown.Item>Sign out</Dropdown.Item>
+                                    <Dropdown.Item onClick={onLogout}>Sign out</Dropdown.Item>
                                 </Dropdown>
                                 <Navbar.Toggle />
                             </div>
                             <Navbar.Collapse>
                                 <Navbar.Link>
                                     <NavLink
+                                        as={Link}
                                         to="/users"
                                         className={({ isActive }) =>
                                             isActive ? "" : "text-xl"
@@ -120,6 +131,7 @@ export default function App() {
                                 </Navbar.Link>
                                 <Navbar.Link>
                                     <NavLink
+                                        as={Link}
                                         to="/user"
                                         className={({ isActive }) =>
                                             isActive ? "" : "text-xl"
@@ -145,7 +157,9 @@ export default function App() {
                             <FindPeople />
                         </Route>
                     </section>
-                    <footer></footer>
+                    <footer>
+                     
+                    </footer>
                 </div>
             </BrowserRouter>
         </Flowbite>

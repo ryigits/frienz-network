@@ -1,5 +1,5 @@
 import { BrowserRouter, Route} from "react-router-dom";
-import ResetPassword from "./components/ResetPassword/ResetPassword";
+import ResetPassword from "./ResetPassword";
 import Login from "./Login";
 import Registration from "./Register";
 
