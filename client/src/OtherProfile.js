@@ -31,7 +31,7 @@ export default function OtherProfile() {
                         id="bio"
                         className="font-normal text-gray-700 dark:text-gray-400"
                     >
-                        {userProfile.bio}
+                        {userProfile.bio?userProfile.bio:"No bio added"}
                     </p>
                 </Card>
             </div>
