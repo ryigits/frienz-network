@@ -4,7 +4,7 @@ import Bio from "./Bio";
 export default function Profile({showUploader,userProfilePic,userProfile}) {
     return (
         <>
-            <section className="bio px-2 w-80">
+            <section className="bio px-2 w-80 ">
                 <Card>
                     <div
                         className="flex flex-wrap gap-2"

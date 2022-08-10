@@ -10,23 +10,21 @@ export default function OtherProfile() {
         fetch(`/users/${userId}.json`)
             .then((resp) => resp.json())
             .then((userData) => {
-                console.log(userData);
-                setUserProfile(userData); // need bio and photo
+                setUserProfile(userData); 
             });
     }, []);
 
     return (
         <>
-            <div className="px-2 w-80">
+            <div className="px-2 w-80 ml-40 mt-2">
                 <Card>
                     <Avatar img={userProfile.profilepic} size="xl" />
-
                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         {userProfile.first_name}
                         <br></br>
                         {userProfile.last_name}
                     </h5>
-                    <div className="mb-2 block">
+                    <div className="block">
                         <Label htmlFor="bio" value="About" />
                     </div>
                     <p

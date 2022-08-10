@@ -46,7 +46,7 @@ export default function App() {
     const theme = {
         theme: {
             navbar: {
-                base: "bg-orange-200 px-2 py-2.5 dark:border-gray-700 dark:bg-gray-800 sm:px-4",
+                base: "bg-purple-100  px-1 py-2.5 dark:border-gray-700 dark:bg-gray-800 sm:px-4",
                 link: {
                     base: "block text-lg py-2 pr-4 pl-3 md:p-0",
                     active: {
@@ -64,20 +64,17 @@ export default function App() {
     return (
         <Flowbite theme={theme}>
             <BrowserRouter>
-                <div className="w-full h-screen bg-orange-200">
+                <div className="w-full h-screen bg-orange-100">
                     <div className="">
                         <Navbar>
                             <Navbar.Brand>
                                 <Link to="/">
                                     <img
                                         src="./frienz.png"
-                                        className="mr-3 h-20 sm:h-9"
+                                        className="h-32 ml-12"
                                         alt="Logo"
                                     />
                                 </Link>
-                                <span className="self-center whitespace-nowrap text-3xl text-white font-semibold dark:text-white">
-                                    Frienz
-                                </span>
                             </Navbar.Brand>
                             <div className="flex md:order-2">
                                 {/* <DarkThemeToggle /> */}
@@ -148,7 +145,7 @@ export default function App() {
                     </div>
                     <section>
                         <Route exact path="/">
-                            <div className="mt-2">
+                            <div className="ml-40 mt-2">
                                 <Profile
                                     userProfile={userProfile}
                                     userProfilePic={userProfilePic}

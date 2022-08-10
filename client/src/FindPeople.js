@@ -39,7 +39,7 @@ export default function FindPeople() {
     return (
         <>
             <div className="flex flex-col justify-center items-center">
-                <div className="text-2xl self-start ml-10 text-green-700 font-medium py-2 ">
+                <div className="text-2xl self-start ml-32 text-green-700 font-medium py-2 ">
                     {" "}
                     {showRecent ? <>Newcomerz Frienz</> : <>Search Result</>}
                 </div>
