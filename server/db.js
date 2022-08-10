@@ -113,4 +113,7 @@ module.exports.getSearchUsers = (first_name) => {
     return db.query(`SELECT * FROM users WHERE first_name ILIKE $1;`,[first_name+'%']);
 };
 
+module.exports.getUserById = (id) => {
+    return db.query(`SELECT * FROM users WHERE id=$1;`,[id]);
+};
 

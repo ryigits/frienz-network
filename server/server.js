@@ -70,6 +70,17 @@ app.get("/user/:firstName.json", (req, res) => {
     });
 });
 
+app.get("/users/:id.json", (req, res) => {
+    const { id } = req.params;
+    db.getUserById(id).then((data) => {
+        const userData = data.rows[0];
+        db.getProfileById(id).then((user) => {
+            const profileData = user.rows[0];
+            res.json({ ...userData, ...profileData });
+        });
+    });
+});
+
 app.get("/bio", (req, res) => {
     db.getProfileById(req.session.id).then((profileData) => {
         res.json(profileData.rows[0]);
@@ -160,8 +171,8 @@ app.post("/image", uploader.single("photo"), s3.upload, (req, res) => {
 });
 
 app.get("/logout", (req, res) => {
-    req.session=null;
-    res.json({logout:true});
+    req.session = null;
+    res.json({ logout: true });
 });
 
 app.get("*", function (req, res) {

@@ -6,6 +6,7 @@ import { Avatar, Navbar, Dropdown, Flowbite } from "flowbite-react";
 import Profile from "./Profile";
 import { BrowserRouter, Route, Link, NavLink } from "react-router-dom";
 import FindPeople from "./FindPeople";
+import OtherProfile from "./OtherProfile";
 
 export default function App() {
     const [userProfile, setUserProfile] = useState({});
@@ -113,7 +114,9 @@ export default function App() {
                                         )}
                                     </Dropdown.Item>
                                     <Dropdown.Divider />
-                                    <Dropdown.Item onClick={onLogout}>Sign out</Dropdown.Item>
+                                    <Dropdown.Item onClick={onLogout}>
+                                        Sign out
+                                    </Dropdown.Item>
                                 </Dropdown>
                                 <Navbar.Toggle />
                             </div>
@@ -153,13 +156,14 @@ export default function App() {
                                 />
                             </div>
                         </Route>
-                        <Route path="/users">
+                        <Route exact path="/users">
                             <FindPeople />
                         </Route>
+                        <Route path="/users/:userId">
+                            <OtherProfile />
+                        </Route>
                     </section>
-                    <footer>
-                     
-                    </footer>
+                    <footer></footer>
                 </div>
             </BrowserRouter>
         </Flowbite>

@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Card, TextInput, Alert } from "flowbite-react";
+import {Link} from "react-router-dom";
 
 export default function FindPeople() {
     const [users, setUsers] = useState([]);
     const [searchUser, setSearchUser] = useState("");
-    const [showRecent,setShowRecent]=useState(true);
+    const [showRecent, setShowRecent] = useState(true);
 
     useEffect(() => {
         fetch("/recentusers")
@@ -38,7 +39,10 @@ export default function FindPeople() {
     return (
         <>
             <div className="flex flex-col justify-center items-center">
-                <div className="text-2xl self-start ml-10 text-green-700 font-medium py-2 "> {showRecent?(<>Newcomerz Frienz</>):(<>Search Result</>)}</div>
+                <div className="text-2xl self-start ml-10 text-green-700 font-medium py-2 ">
+                    {" "}
+                    {showRecent ? <>Newcomerz Frienz</> : <>Search Result</>}
+                </div>
                 <div className="h-120 w-120 flex">
                     {users.length === 0 ? (
                         <div className="w-40">
@@ -49,16 +53,18 @@ export default function FindPeople() {
                             {users.map((user, index) => (
                                 <div key={index} className="w-40 m-2">
                                     <Card data-testid={user.id}>
-                                        {user.first_name}
-                                        <br></br>
-                                        {user.last_name}
+                                        <Link to={`/users/${user.id}`}>
+                                            {user.first_name}
+                                            <br></br>
+                                            {user.last_name}
+                                        </Link>
                                     </Card>
                                 </div>
                             ))}
                         </div>
                     )}
                 </div>
-                <div className= "mt-4 w-44">
+                <div className="mt-4 w-44">
                     <div>
                         <TextInput
                             color="success"
