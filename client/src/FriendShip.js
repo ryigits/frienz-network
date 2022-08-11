@@ -11,12 +11,16 @@ export default function FriendShip({ userId }) {
                 console.log(friendship);
                 if (friendship.result === "not found") {
                     setFriendShipStatus({ pending: true });
-                }
-                if (friendship.sender_id === Number(userId)) {
+                } else if (friendship.sender_id === Number(userId)) {
                     //sender ile bakilan sayfa ayni ise approve cikarman lazim
-                    setFriendShipStatus({ ...friendship, approve: true });
+                    if (friendship.arefriend) {
+                        setFriendShipStatus(friendship);
+                    } else {
+                        setFriendShipStatus({ ...friendship, approve: true });
+                    }
                 } else if (friendship.receiver_id === Number(userId)) {
                     //cancel request cikmali
+                    setFriendShipStatus(friendship);
                 }
             });
     }, []);
@@ -34,11 +38,13 @@ export default function FriendShip({ userId }) {
             .then((data) => {
                 if (data.success) {
                     console.log("adding friend done");
+                    setFriendShipStatus({ pending: false });
                 }
             });
     };
-    const cancelFriendShipRequest = () => {
-        fetch(`/friendship/cancel/${userId}.json`, {
+
+    const acceptFriend = () => {
+        fetch(`/friendship/accept.json`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -49,28 +55,42 @@ export default function FriendShip({ userId }) {
             .then((data) => data.json())
             .then((data) => {
                 if (data.success) {
-                    setFriendShipStatus({
-                        ...friendShipStatus,
-                        pending: false,
-                    });
+                    console.log("friendship accepted");
+                    setFriendShipStatus({ approve: true });
+                }
+            });
+    };
+
+    const removeFriend = () => {
+        fetch(`/friendship/remove.json`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({ id: friendShipStatus.id }),
+        })
+            .then((data) => data.json())
+            .then((data) => {
+                if (data.success) {
+                    console.log("friendship removed");
+                    setFriendShipStatus({ pending: true });
                 }
             });
     };
 
     return (
         <>
-            {!friendShipStatus.pending ? (
+            {friendShipStatus.arefriend ? (
+                <Button onClick={removeFriend} color="failure">Remove Friend</Button>
+            ) : !friendShipStatus.pending ? (
                 friendShipStatus.approve ? (
-                    <Button>Accept Request</Button>
+                    <Button onClick={acceptFriend} color="success">Accept Request</Button>
                 ) : (
-                    <Button onClick={cancelFriendShipRequest}>
-                        Cancel Request
-                    </Button>
+                    <Button onClick={removeFriend} color="warning">Cancel Request</Button>
                 )
-            ) : !friendShipStatus.arefriend ? (
-                <Button onClick={addFriend}>Add Friend</Button>
             ) : (
-                <Button>Remove Friend</Button>
+                <Button onClick={addFriend}>Add Friend</Button>
             )}
         </>
     );

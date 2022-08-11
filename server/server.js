@@ -97,14 +97,18 @@ app.post("/friendship/add.json", (req, res) => {
     });
 });
 
-app.post("/friendship/cancel/:id.json", (req, res) => {
-    db.cancelFriendShipRequest(req.body.id).then(() => {
+
+app.post("/friendship/accept.json", (req, res) => {
+    const {id} = req.body;
+    db.acceptFriendShipRequest(id).then(() => {
         res.json({ success: true });
     });
 });
 
-app.post("/friendship/accept/:id.json", (req, res) => {
-    db.cancelFriendShipRequest(req.body.id).then(() => {
+app.post("/friendship/remove.json", (req, res) => {
+    const { id } = req.body;
+    console.log(id);
+    db.removeFriend(id).then(() => {
         res.json({ success: true });
     });
 });

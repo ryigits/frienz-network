@@ -44,7 +44,7 @@ export default function Bio() {
                 <Textarea
                     id="bio"
                     value={bioData}
-                    rows={3}
+                    rows={5}
                     onFocus={showEditButton}
                     onBlur={showEditButton}
                     onChange={(e) =>

@@ -1,16 +1,15 @@
-import { Avatar, Card } from "flowbite-react";
+import {  Card } from "flowbite-react";
 import Bio from "./Bio";
 
 export default function Profile({showUploader,userProfilePic,userProfile}) {
     return (
         <>
-            <section className="bio px-2 w-80 ">
-                <Card>
+            <section className="bio px-2">
+                <Card horizontal={true} imgSrc={userProfilePic}>
                     <div
                         className="flex flex-wrap gap-2"
                         onClick={showUploader}
                     >
-                        <Avatar img={userProfilePic} size="xl" />
                     </div>
                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         <div className="whitespace-normal">
@@ -20,7 +19,7 @@ export default function Profile({showUploader,userProfilePic,userProfile}) {
                         </div>
                     </h5>
                     <div>
-                        <Bio  />
+                        <Bio />
                     </div>
                 </Card>
             </section>

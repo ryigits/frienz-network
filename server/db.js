@@ -112,6 +112,13 @@ module.exports.addFriend = (sender_id, receiver_id) => {
     );
 };
 
+module.exports.removeFriend = (friendship_id) => {
+    const query = `
+        DELETE FROM friendships WHERE id=$1;
+        `;
+    return db.query(query, [friendship_id]);
+};
+
 module.exports.findFriendship = (user1, user2) => {
     const query = `
         SELECT * FROM friendships
@@ -120,16 +127,12 @@ module.exports.findFriendship = (user1, user2) => {
     return db.query(query, [user1, user2]);
 };
 
-module.exports.makeFriendShipRequest = (friendship_id) => {
+
+
+module.exports.acceptFriendShipRequest = (friendship_id) => {
     const query = `
-        UPDATE friendships SET pending=TRUE WHERE id=$1;
+        UPDATE friendships SET arefriend=TRUE WHERE id=$1;
         `;
     return db.query(query, [friendship_id]);
 };
 
-module.exports.cancelFriendShipRequest = (friendship_id) => {
-    const query = `
-        UPDATE friendships SET pending=false WHERE id=$1;
-        `;
-    return db.query(query, [friendship_id]);
-};
