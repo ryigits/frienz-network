@@ -77,9 +77,23 @@ app.get("/users/:id.json", (req, res) => {
     });
 });
 
+app.post("/friendship/:id.json", (req, res) => {
+    db.makeFriendShipRequest(req.body.id).then(() => {
+        res.json({ success: true });
+    });
+});
+
 app.post("/bio", (req, res) => {
     db.updateBio(req.session.id, req.body.bioData).then(() => {
         res.json({ success: true });
+    });
+});
+
+app.get("/friendship/:id.json", (req, res) => {
+    const user1 = req.session.id;
+    const user2 = req.params.id;
+    db.findFriendship(user1, user2).then((data) => {
+        res.json(data.rows[0]);
     });
 });
 

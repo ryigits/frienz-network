@@ -1,18 +1,46 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { Card, Label } from "flowbite-react";
+import { Card, Label, Button } from "flowbite-react";
 
 export default function OtherProfile() {
     const { userId } = useParams();
     const [userProfile, setUserProfile] = useState({});
+    const [friendShipStatus, setFriendShipStatus] = useState({});
 
     useEffect(() => {
         fetch(`/users/${userId}.json`)
             .then((resp) => resp.json())
             .then((userData) => {
-                setUserProfile(userData); 
+                setUserProfile(userData);
             });
     }, []);
+
+    useEffect(() => {
+        fetch(`/friendship/${userId}.json`)
+            .then((resp) => resp.json())
+            .then((friendship) => {
+                setFriendShipStatus(friendship);
+                console.log(friendship);
+            });
+    }, []);
+
+    const makeFriendShipRequest = () => {
+        fetch(`/friendship/${userId}.json`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({ id: friendShipStatus.id }),
+        })
+            .then((data) => data.json())
+            .then((data) => {
+                if(data.success){
+                    setFriendShipStatus({ ...friendShipStatus, pending: true });
+                }
+                
+            });
+    };
 
     return (
         <>
@@ -32,6 +60,15 @@ export default function OtherProfile() {
                     >
                         {userProfile.bio ? userProfile.bio : "No bio added"}
                     </p>
+                    {friendShipStatus.pending ? (
+                        <Button>Cancel Request</Button>
+                    ) : !friendShipStatus.arefriend ? (
+                        <Button onClick={makeFriendShipRequest}>
+                            Add Friend
+                        </Button>
+                    ) : (
+                        <Button>Remove Friend</Button>
+                    )}
                 </Card>
             </div>
         </>

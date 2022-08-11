@@ -17,13 +17,12 @@ const db = spicedPg(databaseUrl);
 const bcrypt = require("./bcrypt");
 
 module.exports.addUser = (first_name, last_name, email, password) => {
-    return db
-        .query(
-            `
+    return db.query(
+        `
         INSERT INTO users(first_name,last_name,email,password_hash)
         VALUES ($1,$2,$3,$4)  RETURNING id,first_name`,
-            [first_name, last_name, email, password]
-        );
+        [first_name, last_name, email, password]
+    );
 };
 
 module.exports.getUserByEmail = (email) => {
@@ -81,10 +80,7 @@ module.exports.getProfileById = (id) => {
 };
 
 module.exports.addProfilePic = (id, url) => {
-    return db.query(`UPDATE profiles SET profilepic=$2 WHERE user_id=$1;`, [
-        id,
-        url,
-    ]);
+    return db.query(`UPDATE users SET profilepic=$2 WHERE id=$1;`, [id, url]);
 };
 
 module.exports.getUserById = (id) => {
@@ -92,10 +88,7 @@ module.exports.getUserById = (id) => {
 };
 
 module.exports.updateBio = (id, bio) => {
-    return db.query(`UPDATE users SET bio=$2 WHERE id=$1;`, [
-        id,
-        bio,
-    ]);
+    return db.query(`UPDATE users SET bio=$2 WHERE id=$1;`, [id, bio]);
 };
 
 module.exports.getRecentUsers = () => {
@@ -103,10 +96,33 @@ module.exports.getRecentUsers = () => {
 };
 
 module.exports.getSearchUsers = (first_name) => {
-    return db.query(`SELECT * FROM users WHERE first_name ILIKE $1 LIMIT 4;`,[first_name+'%']);
+    return db.query(`SELECT * FROM users WHERE first_name ILIKE $1 LIMIT 4;`, [
+        first_name + "%",
+    ]);
 };
 
 module.exports.getUserById = (id) => {
-    return db.query(`SELECT * FROM users WHERE id=$1;`,[id]);
+    return db.query(`SELECT * FROM users WHERE id=$1;`, [id]);
 };
 
+module.exports.addFriend = (sender_id, receiver_id) => {
+    return db.query(
+        `INSERT INTO friendships (sender_id,receiver_id) VALUES ($1,$2) RETURNING id`,
+        [sender_id, receiver_id]
+    );
+};
+
+module.exports.findFriendship = (user1, user2) => {
+    const query = `
+        SELECT * FROM friendships
+        WHERE (sender_id = $1 AND receiver_id = $2)
+        OR (sender_id = $2 AND receiver_id = $1)`;
+    return db.query(query, [user1, user2]);
+};
+
+module.exports.makeFriendShipRequest = (friendship_id) => {
+    const query = `
+        UPDATE friendships SET pending=TRUE WHERE id=$1;
+        `;
+    return db.query(query, [friendship_id]);
+};

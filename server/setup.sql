@@ -1,5 +1,6 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS reset_codes;
+DROP TABLE IF EXISTS friendships;
 
 CREATE TABLE users (
     id            SERIAL PRIMARY KEY,
@@ -18,3 +19,13 @@ CREATE TABLE reset_codes(
     code VARCHAR NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE friendships(
+    id SERIAL PRIMARY KEY,
+    sender_id INTEGER NOT NULL REFERENCES users(id) ,
+    receiver_id INTEGER NOT NULL REFERENCES users(id),
+    pending BOOLEAN DEFAULT NULL,
+    areFriend BOOLEAN DEFAULT FALSE, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
