@@ -143,7 +143,7 @@ export default function App() {
                             </Navbar.Collapse>
                         </Navbar>
                     </div>
-                    <section>
+                    <section className="">
                         <Route exact path="/">
                             <div className="ml-40 mt-2">
                                 <Profile

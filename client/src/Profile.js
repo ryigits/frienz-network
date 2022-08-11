@@ -20,7 +20,7 @@ export default function Profile({showUploader,userProfilePic,userProfile}) {
                         </div>
                     </h5>
                     <div>
-                        <Bio />
+                        <Bio  />
                     </div>
                 </Card>
             </section>

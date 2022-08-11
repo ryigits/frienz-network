@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Card, TextInput, Alert } from "flowbite-react";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function FindPeople() {
     const [users, setUsers] = useState([]);
@@ -38,7 +38,7 @@ export default function FindPeople() {
 
     return (
         <>
-            <div className="flex flex-col justify-center items-center">
+            <div className="flex flex-col justify-center items-center ">
                 <div className="text-2xl text-green-700 font-semibold py-2 ">
                     {" "}
                     {showRecent ? <>Newcomerz</> : <>Search Result</>}
@@ -49,16 +49,19 @@ export default function FindPeople() {
                             <Alert color="failure">No Match</Alert>
                         </div>
                     ) : (
-                        <div className="recentusers flex flex-row flex-wrap justify-around h-max">
+                        <div className="recentusers flex flex-row flex-wrap justify-around ">
                             {users.map((user, index) => (
                                 <div key={index} className="w-40 m-2">
-                                    <Card data-testid={user.id}>
-                                        <Link to={`/users/${user.id}`}>
+                                    <Link to={`/users/${user.id}`}>
+                                        <Card
+                                            imgSrc={user.profilepic}
+                                            data-testid={user.id}
+                                        >
                                             {user.first_name}
                                             <br></br>
                                             {user.last_name}
-                                        </Link>
-                                    </Card>
+                                        </Card>
+                                    </Link>
                                 </div>
                             ))}
                         </div>

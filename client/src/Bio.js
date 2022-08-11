@@ -7,10 +7,10 @@ export default function Bio() {
     const [isEditButtonActive, setIsEditButtonActive] = useState(false);
 
     useEffect(() => {
-        fetch("/bio")
+        fetch("/profile")
             .then((data) => data.json())
-            .then((bioData) => {
-                setBioData(bioData);
+            .then((userData) => {
+                setBioData(userData.bio);
             });
     }, []);
 
@@ -21,7 +21,7 @@ export default function Bio() {
                 "Content-Type": "application/json",
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify(bioData),
+            body: JSON.stringify({bioData}),
         })
             .then((data) => data.json())
             .then(() => {
@@ -32,7 +32,6 @@ export default function Bio() {
             });
     };
     const showEditButton = () => {
-        console.log();
         setIsEditButtonActive(isEditButtonActive === false ? true : false);
     };
 
@@ -44,12 +43,12 @@ export default function Bio() {
                 </div>
                 <Textarea
                     id="bio"
-                    value={bioData.bio}
+                    value={bioData}
                     rows={3}
                     onFocus={showEditButton}
                     onBlur={showEditButton}
                     onChange={(e) =>
-                        setBioData({ ...bioData, bio: e.target.value })
+                        setBioData(e.target.value)
                     }
                 />
                 <div>

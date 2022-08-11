@@ -1,6 +1,6 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { Card, Label,Avatar } from "flowbite-react";
+import { Card, Label } from "flowbite-react";
 
 export default function OtherProfile() {
     const { userId } = useParams();
@@ -16,9 +16,8 @@ export default function OtherProfile() {
 
     return (
         <>
-            <div className="px-2 w-80 ml-40 mt-2">
-                <Card>
-                    <Avatar img={userProfile.profilepic} size="xl" />
+            <div className="px-2 ml-40 mt-2">
+                <Card horizontal={true} imgSrc={userProfile.profilepic}>
                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                         {userProfile.first_name}
                         <br></br>
@@ -31,7 +30,7 @@ export default function OtherProfile() {
                         id="bio"
                         className="font-normal text-gray-700 dark:text-gray-400"
                     >
-                        {userProfile.bio?userProfile.bio:"No bio added"}
+                        {userProfile.bio ? userProfile.bio : "No bio added"}
                     </p>
                 </Card>
             </div>

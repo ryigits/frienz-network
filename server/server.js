@@ -45,13 +45,12 @@ app.get("/user/id.json", function (req, res) {
 
 app.get("/profile", function (req, res) {
     db.getUserById(req.session.id).then((userData) => {
-        const { first_name, last_name } = userData.rows[0];
-        db.getProfileById(req.session.id).then((userData) => {
-            res.json({
-                first: first_name,
-                last: last_name,
-                url: userData.rows[0].profilepic,
-            });
+        const { first_name, last_name, profilepic, bio } = userData.rows[0];
+        res.json({
+            first: first_name,
+            last: last_name,
+            bio: bio,
+            url: profilepic,
         });
     });
 });
@@ -74,22 +73,12 @@ app.get("/users/:id.json", (req, res) => {
     const { id } = req.params;
     db.getUserById(id).then((data) => {
         const userData = data.rows[0];
-        db.getProfileById(id).then((user) => {
-            const profileData = user.rows[0];
-            res.json({ ...userData, ...profileData });
-        });
-    });
-});
-
-app.get("/bio", (req, res) => {
-    db.getProfileById(req.session.id).then((profileData) => {
-        res.json(profileData.rows[0]);
+        res.json(userData);
     });
 });
 
 app.post("/bio", (req, res) => {
-    const { bio } = req.body;
-    db.updateBio(req.session.id, bio).then(() => {
+    db.updateBio(req.session.id, req.body.bioData).then(() => {
         res.json({ success: true });
     });
 });

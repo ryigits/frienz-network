@@ -23,14 +23,7 @@ module.exports.addUser = (first_name, last_name, email, password) => {
         INSERT INTO users(first_name,last_name,email,password_hash)
         VALUES ($1,$2,$3,$4)  RETURNING id,first_name`,
             [first_name, last_name, email, password]
-        )
-        .then((returning) => {
-            let id = returning.rows[0].id;
-            return db.query(
-                `INSERT INTO profiles(profilepic,bio,age,user_id) VALUES (DEFAULT,DEFAULT,DEFAULT,$1) RETURNING  user_id`,
-                [id]
-            );
-        });
+        );
 };
 
 module.exports.getUserByEmail = (email) => {
@@ -84,7 +77,7 @@ module.exports.getCodesFromDb = () => {
 };
 
 module.exports.getProfileById = (id) => {
-    return db.query(`SELECT * FROM profiles WHERE user_id=$1;`, [id]);
+    return db.query(`;`, [id]);
 };
 
 module.exports.addProfilePic = (id, url) => {
@@ -99,7 +92,7 @@ module.exports.getUserById = (id) => {
 };
 
 module.exports.updateBio = (id, bio) => {
-    return db.query(`UPDATE profiles SET bio=$2 WHERE user_id=$1;`, [
+    return db.query(`UPDATE users SET bio=$2 WHERE id=$1;`, [
         id,
         bio,
     ]);
@@ -110,7 +103,7 @@ module.exports.getRecentUsers = () => {
 };
 
 module.exports.getSearchUsers = (first_name) => {
-    return db.query(`SELECT * FROM users WHERE first_name ILIKE $1;`,[first_name+'%']);
+    return db.query(`SELECT * FROM users WHERE first_name ILIKE $1 LIMIT 4;`,[first_name+'%']);
 };
 
 module.exports.getUserById = (id) => {
