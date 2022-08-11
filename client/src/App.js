@@ -70,7 +70,7 @@ export default function App() {
                             <Navbar.Brand>
                                 <Link to="/">
                                     <img
-                                        src="./frienz.png"
+                                        src="https://frienznetwork.s3.amazonaws.com/QaZ3ER43raWENMhc.png"
                                         className="h-32 ml-12"
                                         alt="Logo"
                                     />

@@ -126,3 +126,10 @@ module.exports.makeFriendShipRequest = (friendship_id) => {
         `;
     return db.query(query, [friendship_id]);
 };
+
+module.exports.cancelFriendShipRequest = (friendship_id) => {
+    const query = `
+        UPDATE friendships SET pending=false WHERE id=$1;
+        `;
+    return db.query(query, [friendship_id]);
+};

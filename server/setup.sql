@@ -24,8 +24,9 @@ CREATE TABLE friendships(
     id SERIAL PRIMARY KEY,
     sender_id INTEGER NOT NULL REFERENCES users(id) ,
     receiver_id INTEGER NOT NULL REFERENCES users(id),
-    pending BOOLEAN DEFAULT NULL,
-    areFriend BOOLEAN DEFAULT FALSE, 
+    pending BOOLEAN DEFAULT FALSE,
+    accepted BOOLEAN DEFAULT FALSE,
+    arefriend BOOLEAN DEFAULT FALSE, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 

@@ -76,9 +76,35 @@ app.get("/users/:id.json", (req, res) => {
         res.json(userData);
     });
 });
+app.get("/friendship/:id.json", (req, res) => {
+    const user1 = req.session.id;
+    const user2 = req.params.id;
+    db.findFriendship(user1, user2).then((data) => {
+        if(data.rowCount === 0 ){
+            return res.json({result:"not found"});
+        }else{
+            res.json(data.rows[0]);
+        }
+        
+    });
+});
 
-app.post("/friendship/:id.json", (req, res) => {
-    db.makeFriendShipRequest(req.body.id).then(() => {
+app.post("/friendship/add.json", (req, res) => {
+    const sender_id = req.session.id;
+    const {receiver_id} = req.body;
+    db.addFriend(sender_id,receiver_id).then(() => {
+        res.json({ success: true });
+    });
+});
+
+app.post("/friendship/cancel/:id.json", (req, res) => {
+    db.cancelFriendShipRequest(req.body.id).then(() => {
+        res.json({ success: true });
+    });
+});
+
+app.post("/friendship/accept/:id.json", (req, res) => {
+    db.cancelFriendShipRequest(req.body.id).then(() => {
         res.json({ success: true });
     });
 });
@@ -89,13 +115,7 @@ app.post("/bio", (req, res) => {
     });
 });
 
-app.get("/friendship/:id.json", (req, res) => {
-    const user1 = req.session.id;
-    const user2 = req.params.id;
-    db.findFriendship(user1, user2).then((data) => {
-        res.json(data.rows[0]);
-    });
-});
+
 
 app.post("/register.json", (req, res) => {
     const { first, last, email, password } = req.body;
