@@ -84,7 +84,7 @@ app.get("/closefriend/:id.json", (req, res) => {
         if (data.rowCount === 0) {
             return res.json({ result: "not found" });
         } else {
-            console.log(data.rows);
+
             res.json(data.rows[0]);
         }
     });
@@ -99,7 +99,6 @@ app.post("/removeCloseFriend", async (req, res) => {
     res.json({ result: "not found" });
 });
 app.post("/acceptCloseFriend", async (req, res) => {
-    console.log(req.body);
     const result = await db.acceptCloseFriend(req.body.id, req.session.id);
     res.json(result.rows[0]);
 });
@@ -133,7 +132,6 @@ app.post("/friendship/accept.json", (req, res) => {
 
 app.post("/friendship/remove.json", (req, res) => {
     const { id } = req.body;
-    console.log(id);
     db.removeFriend(id).then(() => {
         res.json({ success: true });
     });
