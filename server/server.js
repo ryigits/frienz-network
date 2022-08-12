@@ -76,30 +76,56 @@ app.get("/users/:id.json", (req, res) => {
         res.json(userData);
     });
 });
+
+app.get("/closefriend/:id.json", (req, res) => {
+    const user1 = req.session.id;
+    const user2 = req.params.id;
+    db.findCloseFriends(user1, user2).then((data) => {
+        if (data.rowCount === 0) {
+            return res.json({ result: "not found" });
+        } else {
+            console.log(data.rows);
+            res.json(data.rows[0]);
+        }
+    });
+});
+
+app.post("/addCloseFriend", async (req, res) => {
+    const result = await db.addCloseFriend(req.session.id, req.body.id);
+    res.json(result.rows[0]);
+});
+app.post("/removeCloseFriend", async (req, res) => {
+    await db.removeCloseFriend(req.body.id, req.session.id);
+    res.json({ result: "not found" });
+});
+app.post("/acceptCloseFriend", async (req, res) => {
+    console.log(req.body);
+    const result = await db.acceptCloseFriend(req.body.id, req.session.id);
+    res.json(result.rows[0]);
+});
+
 app.get("/friendship/:id.json", (req, res) => {
     const user1 = req.session.id;
     const user2 = req.params.id;
     db.findFriendship(user1, user2).then((data) => {
-        if(data.rowCount === 0 ){
-            return res.json({result:"not found"});
-        }else{
+        if (data.rowCount === 0) {
+            return res.json({ result: "not found" });
+        } else {
             res.json(data.rows[0]);
         }
-        
     });
 });
 
 app.post("/friendship/add.json", (req, res) => {
     const sender_id = req.session.id;
-    const {receiver_id} = req.body;
-    db.addFriend(sender_id,receiver_id).then(() => {
+    const { receiver_id } = req.body;
+    db.addFriend(sender_id, receiver_id).then(() => {
         res.json({ success: true });
     });
 });
 
-
 app.post("/friendship/accept.json", (req, res) => {
-    const {id} = req.body;
+    const { id } = req.body;
     db.acceptFriendShipRequest(id).then(() => {
         res.json({ success: true });
     });
@@ -118,8 +144,6 @@ app.post("/bio", (req, res) => {
         res.json({ success: true });
     });
 });
-
-
 
 app.post("/register.json", (req, res) => {
     const { first, last, email, password } = req.body;

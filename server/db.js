@@ -136,3 +136,33 @@ module.exports.acceptFriendShipRequest = (friendship_id) => {
     return db.query(query, [friendship_id]);
 };
 
+module.exports.addCloseFriend = (sender_id, receiver_id) => {
+    return db.query(
+        `INSERT INTO closefriends (sender_id,receiver_id) VALUES ($1,$2) RETURNING *`,
+        [sender_id, receiver_id]
+    );
+};
+
+module.exports.findCloseFriends = (user1, user2) => {
+    const query = `
+        SELECT * FROM closefriends
+        WHERE (sender_id = $1 AND receiver_id = $2)
+        OR (sender_id = $2 AND receiver_id = $1)`;
+    return db.query(query, [user1, user2]);
+};
+
+module.exports.removeCloseFriend = (sender_id, receiver_id) => {
+    const query = `
+        DELETE FROM closefriends WHERE (sender_id = $1 AND receiver_id = $2)
+        OR (sender_id = $2 AND receiver_id = $1) RETURNING *;
+        `;
+    return db.query(query, [sender_id, receiver_id]);
+};
+
+
+module.exports.acceptCloseFriend = (sender_id,receiver_id) => {
+    const query = `
+        UPDATE closefriends SET arefriend=TRUE WHERE sender_id=$1 AND receiver_id=$2 RETURNING *;
+        `;
+    return db.query(query, [sender_id,receiver_id]);
+};
