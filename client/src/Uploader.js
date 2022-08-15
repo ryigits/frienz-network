@@ -2,7 +2,7 @@ import React from "react";
 import { useState, useEffect } from "react";
 import { Modal } from "flowbite-react";
 
-export default function Uploader({ setUserProfilePic, showUploader }) {
+export default function Uploader({ showUploader }) {
     const [show, setShow] = useState(false);
 
     useEffect(() => {
@@ -24,8 +24,7 @@ export default function Uploader({ setUserProfilePic, showUploader }) {
             body: formData,
         })
             .then((result) => result.json())
-            .then((data) => {
-                setUserProfilePic(data.url);
+            .then(() => {
                 showUploader();
                 setShow(false);
             });

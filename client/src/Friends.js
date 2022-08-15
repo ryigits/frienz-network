@@ -68,8 +68,8 @@ export default function Friends() {
         <>
             <div className="flex justify-around">
                 <div className="frienz">
-                    <h2 className="text-xl font-semibold text-rose-500">
-                        Your Frienz
+                    <h2 className="text-2xl font-semibold text-rose-500">
+                        Frienz
                     </h2>
                     <div className="flex flex-row flex-wrap space-x-10">
                         {closeFriends &&
@@ -99,8 +99,8 @@ export default function Friends() {
                     </div>
                 </div>
                 <div className="wannabes">
-                    <h2 className="text-xl font-semibold text-purple-700">
-                        Your Wannabes
+                    <h2 className="text-2xl font-semibold text-purple-700">
+                        Wannabes
                     </h2>
                     <div className="flex flex-row flex-wrap space-x-10">
                         {wannabes &&

@@ -45,13 +45,14 @@ app.get("/user/id.json", function (req, res) {
 
 app.get("/profile", function (req, res) {
     db.getUserById(req.session.id).then((userData) => {
-        const { first_name, last_name, profilepic, bio } = userData.rows[0];
+        const { first_name, last_name, profilepic, bio,email } = userData.rows[0];
         res.json({
             id:req.session.id,
             first: first_name,
             last: last_name,
             bio: bio,
             url: profilepic,
+            email:email
         });
     });
 });

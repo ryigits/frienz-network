@@ -25,7 +25,7 @@ fetch("/user/id.json")
             // this means the user is registered cause their browser DID have the right cookie and they should be seeing a logo
             root.render(
                 <Provider store={store}>
-                    <App />
+                    <App  />
                 </Provider>
             );
         }
