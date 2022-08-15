@@ -16,12 +16,12 @@ export default function CloseFriend() {
 
     const handleResponse = (data) => {
         let button = {
-            text: "Add to Close Friend",
+            text: "Add to Friend",
             url: "/addCloseFriend",
             color: "dark",
         };
         if (data.arefriend) {
-            button.text = "Remove from Close Friend";
+            button.text = "Remove from Friend";
             button.url = "/removeCloseFriend";
             button.color = "failure";
         } else if (data.sender_id === Number(userId)) {

@@ -75,7 +75,7 @@ export default function Friends() {
                         {closeFriends &&
                             closeFriends.map((friend) => {
                                 return (
-                                    <div key={friend.id}>
+                                    <div className="w-40" key={friend.id}>
                                         <Link to={`/users/${friend.id}`}>
                                             <Card imgSrc={friend.profilepic}>
                                                 {friend.first_name}
@@ -83,7 +83,7 @@ export default function Friends() {
                                                 {friend.last_name}
                                             </Card>
                                         </Link>
-                                        <div>
+                                        <div className="flex justify-center">
                                             <Button
                                                 onClick={() =>
                                                     removeFriend(friend.id)
@@ -106,7 +106,7 @@ export default function Friends() {
                         {wannabes &&
                             wannabes.map((friend) => {
                                 return (
-                                    <div key={friend.id}>
+                                    <div className="w-40" key={friend.id}>
                                         <Link to={`/users/${friend.id}`}>
                                             <Card imgSrc={friend.profilepic}>
                                                 {friend.first_name}
@@ -114,14 +114,16 @@ export default function Friends() {
                                                 {friend.last_name}
                                             </Card>
                                         </Link>
-                                        <Button
-                                            onClick={() =>
-                                                handleWannabe(friend.id)
-                                            }
-                                            color="warning"
-                                        >
-                                            Accept
-                                        </Button>
+                                        <div className="flex justify-center">
+                                            <Button
+                                                onClick={() =>
+                                                    handleWannabe(friend.id)
+                                                }
+                                                color="warning"
+                                            >
+                                                Accept
+                                            </Button>
+                                        </div>
                                     </div>
                                 );
                             })}

@@ -1,7 +1,6 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
 import { Card, Label } from "flowbite-react";
-import FriendShip from "./FriendShip";
 import CloseFriend from "./CloseFriend";
 
 export default function OtherProfile() {
@@ -35,7 +34,6 @@ export default function OtherProfile() {
                     >
                         {userProfile.bio ? userProfile.bio : "No bio added"}
                     </p>
-                    <FriendShip userId={userId} />
                     <CloseFriend userId={userId} />
                 </Card>
             </div>

@@ -107,39 +107,7 @@ app.post("/acceptCloseFriend", async (req, res) => {
     res.json(result.rows[0]);
 });
 
-app.get("/friendship/:id.json", (req, res) => {
-    const user1 = req.session.id;
-    const user2 = req.params.id;
-    db.findFriendship(user1, user2).then((data) => {
-        if (data.rowCount === 0) {
-            return res.json({ result: "not found" });
-        } else {
-            res.json(data.rows[0]);
-        }
-    });
-});
 
-app.post("/friendship/add.json", (req, res) => {
-    const sender_id = req.session.id;
-    const { receiver_id } = req.body;
-    db.addFriend(sender_id, receiver_id).then(() => {
-        res.json({ success: true });
-    });
-});
-
-app.post("/friendship/accept.json", (req, res) => {
-    const { id } = req.body;
-    db.acceptFriendShipRequest(id).then(() => {
-        res.json({ success: true });
-    });
-});
-
-app.post("/friendship/remove.json", (req, res) => {
-    const { id } = req.body;
-    db.removeFriend(id).then(() => {
-        res.json({ success: true });
-    });
-});
 
 app.post("/bio", (req, res) => {
     db.updateBio(req.session.id, req.body.bioData).then(() => {
