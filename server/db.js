@@ -127,8 +127,6 @@ module.exports.findFriendship = (user1, user2) => {
     return db.query(query, [user1, user2]);
 };
 
-
-
 module.exports.acceptFriendShipRequest = (friendship_id) => {
     const query = `
         UPDATE friendships SET arefriend=TRUE WHERE id=$1;
@@ -159,10 +157,22 @@ module.exports.removeCloseFriend = (sender_id, receiver_id) => {
     return db.query(query, [sender_id, receiver_id]);
 };
 
-
-module.exports.acceptCloseFriend = (sender_id,receiver_id) => {
+module.exports.acceptCloseFriend = (sender_id, receiver_id) => {
     const query = `
-        UPDATE closefriends SET arefriend=TRUE WHERE sender_id=$1 AND receiver_id=$2 RETURNING *;
+        UPDATE closefriends SET arefriend=TRUE,accepted=TRUE 
+        WHERE sender_id=$1 
+        AND receiver_id=$2
+        RETURNING *;
         `;
-    return db.query(query, [sender_id,receiver_id]);
+    return db.query(query, [sender_id, receiver_id]);
+};
+
+module.exports.getAllCloseFriendsAndWannabes = (id) => {
+    const query = `
+        SELECT users.id, first_name, last_name, closefriends.arefriend,closefriends.accepted, profilepic FROM users
+JOIN closefriends
+ON (arefriend = true AND receiver_id = $1 AND users.id = closefriends.sender_id)
+OR (arefriend = true AND sender_id = $1 AND users.id = closefriends.receiver_id)
+OR (arefriend = false AND receiver_id = $1 AND users.id = closefriends.sender_id)`;
+    return db.query(query, [id]);
 };

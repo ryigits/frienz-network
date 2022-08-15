@@ -7,6 +7,7 @@ import Profile from "./Profile";
 import { BrowserRouter, Route, Link, NavLink } from "react-router-dom";
 import FindPeople from "./FindPeople";
 import OtherProfile from "./OtherProfile";
+import Friends from "./Friends";
 
 export default function App() {
     const [userProfile, setUserProfile] = useState({});
@@ -132,12 +133,12 @@ export default function App() {
                                 <Navbar.Link>
                                     <NavLink
                                         as={Link}
-                                        to="/user"
+                                        to="/friends"
                                         className={({ isActive }) =>
                                             isActive ? "" : "text-xl"
                                         }
                                     >
-                                        Another Link
+                                        Friends
                                     </NavLink>
                                 </Navbar.Link>
                             </Navbar.Collapse>
@@ -158,6 +159,9 @@ export default function App() {
                         </Route>
                         <Route path="/users/:userId">
                             <OtherProfile />
+                        </Route>
+                        <Route exact path="/friends">
+                            <Friends />
                         </Route>
                     </section>
                     <footer></footer>

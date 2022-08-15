@@ -8,7 +8,6 @@ export default function FriendShip({ userId }) {
         fetch(`/friendship/${userId}.json`)
             .then((resp) => resp.json())
             .then((friendship) => {
-                console.log(friendship);
                 if (friendship.result === "not found") {
                     setFriendShipStatus({ pending: true });
                 } else if (friendship.sender_id === Number(userId)) {

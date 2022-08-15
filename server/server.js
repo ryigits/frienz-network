@@ -55,6 +55,11 @@ app.get("/profile", function (req, res) {
     });
 });
 
+app.get("/closefriends/getall", async (req, res) => {
+    const allFriend = await db.getAllCloseFriendsAndWannabes(req.session.id);
+    res.json(allFriend.rows);
+});
+
 app.get("/recentusers", (req, res) => {
     db.getRecentUsers().then((users) => {
         res.json(users.rows);
@@ -84,7 +89,6 @@ app.get("/closefriend/:id.json", (req, res) => {
         if (data.rowCount === 0) {
             return res.json({ result: "not found" });
         } else {
-
             res.json(data.rows[0]);
         }
     });

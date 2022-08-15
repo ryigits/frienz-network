@@ -9,7 +9,6 @@ export default function CloseFriend() {
         fetch(`/closefriend/${userId}.json`)
             .then((resp) => resp.json())
             .then((data) => {
-                console.log(data);
                 const currentButton = handleResponse(data);
                 setButton(currentButton);
             });
@@ -45,7 +44,6 @@ export default function CloseFriend() {
         })
             .then((resp) => resp.json())
             .then((data) => {
-                console.log("data after click", data);
                 const currentButton = handleResponse(data);
                 setButton(currentButton);
             });
