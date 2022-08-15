@@ -47,6 +47,7 @@ app.get("/profile", function (req, res) {
     db.getUserById(req.session.id).then((userData) => {
         const { first_name, last_name, profilepic, bio } = userData.rows[0];
         res.json({
+            id:req.session.id,
             first: first_name,
             last: last_name,
             bio: bio,
@@ -62,24 +63,31 @@ app.get("/closefriends/getall", async (req, res) => {
 
 app.get("/recentusers", (req, res) => {
     db.getRecentUsers().then((users) => {
-        res.json(users.rows);
+        const filteredUser=users.rows.filter((user)=>user.id!=req.session.id);
+        res.json(filteredUser);
     });
 });
 
 app.get("/user/:firstName.json", (req, res) => {
     const { firstName } = req.params;
-
     db.getSearchUsers(firstName).then((userData) => {
-        res.json(userData.rows);
+        const filteredUser = userData.rows.filter(
+            (user) => user.id != req.session.id
+        );
+        res.json(filteredUser);
     });
 });
 
 app.get("/users/:id.json", (req, res) => {
     const { id } = req.params;
-    db.getUserById(id).then((data) => {
-        const userData = data.rows[0];
-        res.json(userData);
-    });
+    if (Number(req.params.id) === req.session.id) {
+        return res.json({ forbidden: true });
+    } else {
+        return db.getUserById(id).then((data) => {
+            const userData = data.rows[0];
+            res.json(userData);
+        });
+    }
 });
 
 app.get("/closefriend/:id.json", (req, res) => {
@@ -106,8 +114,6 @@ app.post("/acceptCloseFriend", async (req, res) => {
     const result = await db.acceptCloseFriend(req.body.id, req.session.id);
     res.json(result.rows[0]);
 });
-
-
 
 app.post("/bio", (req, res) => {
     db.updateBio(req.session.id, req.body.bioData).then(() => {

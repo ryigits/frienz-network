@@ -158,7 +158,7 @@ export default function App() {
                             <FindPeople />
                         </Route>
                         <Route path="/users/:userId">
-                            <OtherProfile />
+                            <OtherProfile id={userProfile.id} />
                         </Route>
                         <Route exact path="/friends">
                             <Friends />
