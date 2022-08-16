@@ -41,17 +41,7 @@ export default function Bio() {
                 <div className="mb-2 block">
                     <Label htmlFor="bio" value="About" />
                 </div>
-                <Textarea
-                    id="bio"
-                    value={bioData}
-                    rows={5}
-                    onFocus={showEditButton}
-                    onBlur={showEditButton}
-                    onChange={(e) =>
-                        setBioData(e.target.value)
-                    }
-                />
-                <div>
+                <div className="absolute">
                     {isEditSuccess && (
                         <Alert color="info">
                             <span>
@@ -62,6 +52,15 @@ export default function Bio() {
                         </Alert>
                     )}
                 </div>
+                <Textarea
+                    id="bio"
+                    value={bioData}
+                    rows={5}
+                    onFocus={showEditButton}
+                    onBlur={showEditButton}
+                    onChange={(e) => setBioData(e.target.value)}
+                />
+
                 <div className="block ml-48">
                     {isEditButtonActive && (
                         <Button

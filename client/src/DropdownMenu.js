@@ -3,7 +3,7 @@ import { useState } from "react";
 import Uploader from "./Uploader";
 import { Link } from "react-router-dom";
 
-export default function DropdownMenu({ userProfile }) {
+export default function DropdownMenu({ userProfile,setUserProfile }) {
     const [isUploaderOpen, setIsUploaderOpen] = useState(false);
     const showUploader = () => {
         setIsUploaderOpen(isUploaderOpen === false ? true : false);
@@ -27,6 +27,7 @@ export default function DropdownMenu({ userProfile }) {
     };
     return (
         <div className="mt-2">
+            {isUploaderOpen && <Uploader setUserProfile={setUserProfile}userProfile={userProfile} showUploader={showUploader} />}
             <Dropdown
                 label={
                     <Avatar
@@ -46,14 +47,13 @@ export default function DropdownMenu({ userProfile }) {
                             {userProfile.first}
                             {userProfile.last}
                         </span>
-                        <span  className="block truncate text-sm font-medium">
+                        <span className="block truncate text-sm font-medium">
                             {userProfile.email}
                         </span>
                     </Link>
                 </Dropdown.Header>
                 <Dropdown.Item onClick={showUploader}>
                     Change Picture
-                    {isUploaderOpen && <Uploader showUploader={showUploader} />}
                 </Dropdown.Item>
                 <Dropdown.Divider />
                 <Dropdown.Item onClick={onLogout}>Sign out</Dropdown.Item>

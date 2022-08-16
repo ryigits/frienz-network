@@ -69,7 +69,7 @@ export default function App() {
                             </NavLink>
                         </div>
                         <div className="flex mt-2 h-40 w-20 mr-10">
-                            <DropdownMenu userProfile={userProfile} />
+                            <DropdownMenu setUserProfile={setUserProfile}userProfile={userProfile} />
                         </div>
                     </div>
                     <section className="py-4 min-h-min">
