@@ -244,7 +244,7 @@ io.on("connection", async (socket) => {
         const message = await db
             .addNewMessages(userId, first_name,profilepic, text)
             .then((result) => result.rows);
-        socket.emit("messages", message);
+        io.emit("messages", message);
     });
 
     // this will run every time a socket disconnect

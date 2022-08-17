@@ -21,7 +21,7 @@ export default function OtherProfile({id}) {
             {id == Number(userId) ? (
                 <div>Forbidden You are not Otherz</div>
             ) : (
-                <div className="px-2 ml-40 mt-2">
+                <div className="px-2">
                     <Card horizontal={true} imgSrc={userProfile.profilepic}>
                         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             {userProfile.first_name}

@@ -61,7 +61,7 @@ export default function Bio() {
                     onChange={(e) => setBioData(e.target.value)}
                 />
 
-                <div className="block ml-48">
+                <div className="block ml-36">
                     {isEditButtonActive && (
                         <Button
                             onMouseDown={updateBioData}

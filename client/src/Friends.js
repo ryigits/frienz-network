@@ -98,7 +98,7 @@ export default function Friends() {
                             })}
                     </div>
                 </div>
-                <div className="wannabes">
+                <div className="wannabes ml-10">
                     <h2 className="text-2xl font-semibold text-purple-700">
                         Wannabes
                     </h2>
