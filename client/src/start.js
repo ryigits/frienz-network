@@ -7,6 +7,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./redux/reducer.js";
 import { Provider } from "react-redux";
 
+
 const store = createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(immutableState.default()))
@@ -14,6 +15,8 @@ const store = createStore(
 
 const main = document.querySelector("main");
 const root = createRoot(main);
+
+
 
 fetch("/user/id.json")
     .then((response) => response.json())
@@ -25,7 +28,7 @@ fetch("/user/id.json")
             // this means the user is registered cause their browser DID have the right cookie and they should be seeing a logo
             root.render(
                 <Provider store={store}>
-                    <App  />
+                    <App />
                 </Provider>
             );
         }

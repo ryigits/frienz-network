@@ -9,6 +9,7 @@ import OtherProfile from "./OtherProfile";
 import Friends from "./Friends";
 import DropdownMenu from "./DropdownMenu";
 import { Link } from "react-router-dom";
+import Chat from "./Chat";
 
 export default function App() {
     const [userProfile, setUserProfile] = useState({});
@@ -69,12 +70,15 @@ export default function App() {
                             </NavLink>
                         </div>
                         <div className="flex mt-2 h-40 w-20 mr-10">
-                            <DropdownMenu setUserProfile={setUserProfile}userProfile={userProfile} />
+                            <DropdownMenu
+                                setUserProfile={setUserProfile}
+                                userProfile={userProfile}
+                            />
                         </div>
                     </div>
-                    <section className="py-4 min-h-min">
+                    <section className="flex py-4 justify-center min-h-min">
                         <Route exact path="/">
-                            <div className="ml-40 mt-2">
+                            <div className="">
                                 <Profile userProfile={userProfile} />
                             </div>
                         </Route>
@@ -86,6 +90,9 @@ export default function App() {
                         </Route>
                         <Route exact path="/friends">
                             <Friends />
+                        </Route>
+                        <Route exact path="/chat">
+                            <Chat />
                         </Route>
                     </section>
                 </div>

@@ -11,6 +11,14 @@ const s3 = require("./s3");
 // const { userLogIn, userLogOut } = require("./middleware");
 app.use(express.json());
 
+////// this is our socket.io boilerplate  //////
+const server = require("http").Server(app);
+const io = require("socket.io")(server, {
+    allowRequest: (req, callback) =>
+        callback(null, req.headers.referer.startsWith("http://localhost:3000")),
+});
+//////////////////////////////////////////////
+
 let sessionSecret = process.env.SESSION_SECRET;
 
 if (!sessionSecret) {
@@ -26,13 +34,15 @@ const COOKIE_SECRET =
     process.env.COOKIE_SECRET || require("./secrets.json").COOKIE_SECRET;
 
 const cookieSession = require("cookie-session");
-app.use(
-    cookieSession({
-        secret: COOKIE_SECRET,
-        maxAge: 1000 * 60 * 60 * 24,
-        sameSite: true,
-    })
-);
+const cookieSessionMiddleware = cookieSession({
+    secret: COOKIE_SECRET,
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: true,
+});
+app.use(cookieSessionMiddleware);
+io.use(function (socket, next) {
+    cookieSessionMiddleware(socket.request, socket.request.res, next);
+});
 app.use(compression());
 
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
@@ -45,14 +55,15 @@ app.get("/user/id.json", function (req, res) {
 
 app.get("/profile", function (req, res) {
     db.getUserById(req.session.id).then((userData) => {
-        const { first_name, last_name, profilepic, bio,email } = userData.rows[0];
+        const { first_name, last_name, profilepic, bio, email } =
+            userData.rows[0];
         res.json({
-            id:req.session.id,
+            id: req.session.id,
             first: first_name,
             last: last_name,
             bio: bio,
             url: profilepic,
-            email:email
+            email: email,
         });
     });
 });
@@ -64,7 +75,9 @@ app.get("/closefriends/getall", async (req, res) => {
 
 app.get("/recentusers", (req, res) => {
     db.getRecentUsers().then((users) => {
-        const filteredUser=users.rows.filter((user)=>user.id!=req.session.id);
+        const filteredUser = users.rows.filter(
+            (user) => user.id != req.session.id
+        );
         res.json(filteredUser);
     });
 });
@@ -207,6 +220,43 @@ app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "..", "client", "index.html"));
 });
 
-app.listen(process.env.PORT || 3001, function () {
+server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
+});
+
+io.on("connection", (socket) => {
+    if (!socket.request.session.id) {
+        return socket.disconnect(true);
+    }
+    const userId = socket.request.session.id;
+    // when connection event fires, the callback fn runs and it gets passed an object (i.e. socket)
+    // socket - represents the network connection b/w our client & server
+    console.log(
+        `Socket with id: ${socket.id} has connected on UserId: ${userId}`
+    );
+
+    // this sends to ALL CONNECTED sockets
+    // io.emit("last-10-messages", [
+    //     { id: 1, text: "HEY" },
+    //     { id: 2, text: "HOW ARE YOU" },
+    // ]);
+    const messageArray = [
+        { id: 1, text: "HEY" },
+        { id: 2, text: "HOW ARE YOU" },
+        { id: 3, text: "FINE YOU" },
+        { id: 4, text: "GREAT BUDDY" },
+    ];
+    socket.emit("last-10-messages", messageArray);
+
+    socket.on("new-message", (data) => {
+        messageArray.push(data);
+        console.log(messageArray);
+    });
+
+
+
+    // this will run every time a socket disconnect
+    socket.on("disconnect", () => {
+        console.log(`Socket with id: ${socket.id} just disconnected!`);
+    });
 });
