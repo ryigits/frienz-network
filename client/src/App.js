@@ -76,7 +76,7 @@ export default function App() {
                             />
                         </div>
                     </div>
-                    <section className="flex py-4 justify-center min-h-min">
+                    <section className="flex py-4 w-full justify-center min-h-min">
                         <Route exact path="/">
                             <div className="">
                                 <Profile userProfile={userProfile} />

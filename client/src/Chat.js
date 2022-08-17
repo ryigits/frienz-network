@@ -1,46 +1,43 @@
-import { io } from "socket.io-client";
 import { Textarea, Button, Label } from "flowbite-react";
 // import { HiArrowNarrowRight } from "react-icons/hi";
 import ChatBoard from "./ChatBoard";
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { receiveMessages } from "./redux/messages/slice";
-import useStatefulFields from "./hooks/use-stateful-fields";
+import { useSelector } from "react-redux";
+import { useRef } from "react";
+import { socket } from "./socket";
 
 export default function Chat() {
-    const dispatch = useDispatch();
-    const socket = io.connect();
-    const [values, onFormInputChange] = useStatefulFields();
-
-    useEffect(() => {
-        socket.on("last-10-messages", (data) => {
-            dispatch(receiveMessages(data));
-        });
-    }, []);
-
+    const textareaRef = useRef();
     console.count("rendered");
     const lastMessages = useSelector((state) => state.messages);
 
-    const handleClick = () => {
-        socket.emit("new-message", { id: 100, text: values.textarea });
-        dispatch(receiveMessages([{ id: 100, text: values.textarea }]));
+    const sendMessage = () => {
+        const text = textareaRef.current.value;
+        socket.emit("new-message", text);
+        textareaRef.current.value = "";
+        textareaRef.current.focus();
+    };
+
+    const onChange = (e) => {
+        if (e.keyCode == 13 && !e.shiftKey) {
+            sendMessage();
+        }
     };
 
     return (
         <>
-            <div className="flex w-80 flex-col space-y-2">
+            <div className="flex w-6/12 flex-col space-y-2">
                 <ChatBoard lastMessages={lastMessages} />
                 <div className="mb-2 block">
                     <Label htmlFor="textarea" value="Your message" />
                 </div>
                 <Textarea
                     id="textarea"
-                    name="textarea"
+                    ref={textareaRef}
                     rows={3}
-                    onChange={onFormInputChange}
+                    onKeyUp={onChange}
                 />
                 <div className="self-center">
-                    <Button onClick={handleClick}>Send</Button>
+                    <Button onClick={sendMessage}>Send</Button>
                 </div>
             </div>
         </>

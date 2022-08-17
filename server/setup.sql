@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS reset_codes;
-DROP TABLE IF EXISTS friendships;
 DROP TABLE IF EXISTS closefriends;
+DROP TABLE IF EXISTS chatboard;
 
 CREATE TABLE users (
     id            SERIAL PRIMARY KEY,
@@ -21,15 +21,6 @@ CREATE TABLE reset_codes(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE friendships(
-    id SERIAL PRIMARY KEY,
-    sender_id INTEGER NOT NULL REFERENCES users(id) ,
-    receiver_id INTEGER NOT NULL REFERENCES users(id),
-    pending BOOLEAN DEFAULT FALSE,
-    accepted BOOLEAN DEFAULT FALSE,
-    arefriend BOOLEAN DEFAULT FALSE, 
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
 
 CREATE TABLE closefriends(
     id SERIAL PRIMARY KEY,
@@ -40,3 +31,12 @@ CREATE TABLE closefriends(
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+CREATE TABLE chatboard(
+    id SERIAL PRIMARY KEY,
+    sender_id INTEGER NOT NULL REFERENCES users(id) ,
+    first_name VARCHAR DEFAULT NULL,
+    profilepic VARCHAR DEFAULT NULL,
+    text VARCHAR NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

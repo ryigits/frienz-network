@@ -4,7 +4,7 @@ export default function messageReducer(messages = [], action) {
                         if (action.payload.messages.length > 1) {
                             return action.payload.messages;
                         } else {
-                            return [...messages, action.payload.messages[0]];
+                            return [ action.payload.messages[0],...messages];
                         }
                     default:
                         return messages;

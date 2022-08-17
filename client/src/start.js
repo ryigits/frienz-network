@@ -6,7 +6,7 @@ import * as immutableState from "redux-immutable-state-invariant";
 import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./redux/reducer.js";
 import { Provider } from "react-redux";
-
+import { init } from "./socket.js";
 
 const store = createStore(
     rootReducer,
@@ -26,6 +26,7 @@ fetch("/user/id.json")
             root.render(<Welcome />);
         } else {
             // this means the user is registered cause their browser DID have the right cookie and they should be seeing a logo
+            init(store);
             root.render(
                 <Provider store={store}>
                     <App />

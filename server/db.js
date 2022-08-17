@@ -147,3 +147,14 @@ OR (arefriend = true AND sender_id = $1 AND users.id = closefriends.receiver_id)
 OR (arefriend = false AND receiver_id = $1 AND users.id = closefriends.sender_id)`;
     return db.query(query, [id]);
 };
+
+module.exports.getRecentMessages = () => {
+    return db.query(`SELECT * FROM chatboard ORDER BY id DESC;`, []);
+};
+
+module.exports.addNewMessages = (id, first_name, profilepic, text) => {
+    return db.query(
+        `INSERT INTO chatboard(sender_id,first_name,profilepic,text) VALUES ($1,$2,$3,$4) RETURNING *;`,
+        [id, first_name, profilepic, text]
+    );
+};

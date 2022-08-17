@@ -224,36 +224,28 @@ server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });
 
-io.on("connection", (socket) => {
+io.on("connection", async (socket) => {
     if (!socket.request.session.id) {
         return socket.disconnect(true);
     }
     const userId = socket.request.session.id;
-    // when connection event fires, the callback fn runs and it gets passed an object (i.e. socket)
-    // socket - represents the network connection b/w our client & server
     console.log(
         `Socket with id: ${socket.id} has connected on UserId: ${userId}`
     );
 
-    // this sends to ALL CONNECTED sockets
-    // io.emit("last-10-messages", [
-    //     { id: 1, text: "HEY" },
-    //     { id: 2, text: "HOW ARE YOU" },
-    // ]);
-    const messageArray = [
-        { id: 1, text: "HEY" },
-        { id: 2, text: "HOW ARE YOU" },
-        { id: 3, text: "FINE YOU" },
-        { id: 4, text: "GREAT BUDDY" },
-    ];
-    socket.emit("last-10-messages", messageArray);
+    const messageArray = await db.getRecentMessages().then((data) => data.rows);
 
-    socket.on("new-message", (data) => {
-        messageArray.push(data);
-        console.log(messageArray);
+    socket.emit("messages", messageArray);
+    socket.on("new-message", async (text) => {
+        const { first_name, profilepic } = await db
+            .getUserById(userId)
+            .then((result) => result.rows[0]);
+
+        const message = await db
+            .addNewMessages(userId, first_name,profilepic, text)
+            .then((result) => result.rows);
+        socket.emit("messages", message);
     });
-
-
 
     // this will run every time a socket disconnect
     socket.on("disconnect", () => {
