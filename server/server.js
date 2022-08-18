@@ -223,18 +223,29 @@ app.get("*", function (req, res) {
 server.listen(process.env.PORT || 3001, function () {
     console.log("I'm listening.");
 });
+let onlineUsers = [];
 
 io.on("connection", async (socket) => {
     if (!socket.request.session.id) {
         return socket.disconnect(true);
     }
     const userId = socket.request.session.id;
-    console.log(
-        `Socket with id: ${socket.id} has connected on UserId: ${userId}`
-    );
+    // console.log(
+    //     `Socket with id: ${socket.id} has connected on UserId: ${userId}`
+    // );
+
+    const onlineUser = { id: userId, socket: socket.id };
+    if (onlineUsers.every((element) => element.id !== userId)) {
+        onlineUsers.push(onlineUser);
+    }
+
+    console.log("Currently Online Users", onlineUsers);
+    const onlineUsersInfo = await db
+        .getUsersByIds(onlineUsers.map((e) => e.id))
+        .then((result) => result.rows);
+    io.emit("online-users", onlineUsersInfo);
 
     const messageArray = await db.getRecentMessages().then((data) => data.rows);
-
     socket.emit("messages", messageArray);
     socket.on("new-message", async (text) => {
         const { first_name, profilepic } = await db
@@ -242,13 +253,16 @@ io.on("connection", async (socket) => {
             .then((result) => result.rows[0]);
 
         const message = await db
-            .addNewMessages(userId, first_name,profilepic, text)
+            .addNewMessages(userId, first_name, profilepic, text)
             .then((result) => result.rows);
         io.emit("messages", message);
     });
 
     // this will run every time a socket disconnect
     socket.on("disconnect", () => {
-        console.log(`Socket with id: ${socket.id} just disconnected!`);
+        console.log(
+            `Socket with id: ${socket.id} and userId:${userId} just disconnected!`
+        );
+        onlineUsers = onlineUsers.filter((element) => element.id != userId);
     });
 });

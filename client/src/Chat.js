@@ -1,14 +1,16 @@
 import { Textarea, Button, Label } from "flowbite-react";
 // import { HiArrowNarrowRight } from "react-icons/hi";
 import ChatBoard from "./ChatBoard";
+import OnlineUsers from "./OnlineUsers";
 import { useSelector } from "react-redux";
 import { useRef } from "react";
 import { socket } from "./socket";
 
 export default function Chat() {
     const textareaRef = useRef();
-    console.count("rendered");
+    // console.count("rendered");
     const lastMessages = useSelector((state) => state.messages);
+
 
     const sendMessage = () => {
         const text = textareaRef.current.value;
@@ -23,9 +25,12 @@ export default function Chat() {
         }
     };
 
+
+
     return (
         <>
             <div className="flex w-6/12 flex-col space-y-2">
+                {/* <OnlineUsers/> */}
                 <ChatBoard lastMessages={lastMessages} />
                 <div className="mb-2 block">
                     <Label htmlFor="textarea" value="Your message" />

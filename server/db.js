@@ -158,3 +158,10 @@ module.exports.addNewMessages = (id, first_name, profilepic, text) => {
         [id, first_name, profilepic, text]
     );
 };
+
+module.exports.getUsersByIds = (arrOfUserIds) => {
+    const query = `SELECT id, first_name, last_name, profilepic
+                  FROM users WHERE id = ANY($1)`;
+    const params = [arrOfUserIds];
+    return db.query(query, params);
+};
