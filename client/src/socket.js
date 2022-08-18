@@ -1,6 +1,7 @@
 import { io } from "socket.io-client";
 import { receiveMessages } from "./redux/messages/slice";
 import { receiveOnlineUsers } from "./redux/onlineUsers/slice";
+import { receiveDirectMessages } from "./redux/directMessages/slice";
 export let socket;
 
 export const init = (store) => {
@@ -12,6 +13,9 @@ export const init = (store) => {
         });
         socket.on("online-users", (data) => {
             store.dispatch(receiveOnlineUsers(data));
+        });
+        socket.on("direct-messages", (data) => {
+            store.dispatch(receiveDirectMessages(data));
         });
     }
 };

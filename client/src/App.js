@@ -11,6 +11,8 @@ import DropdownMenu from "./DropdownMenu";
 import { Link } from "react-router-dom";
 import Chat from "./Chat";
 import OnlineUsers from "./OnlineUsers";
+import DirectMessage from "./DirectMessage";
+
 
 export default function App() {
     const [userProfile, setUserProfile] = useState({});
@@ -79,7 +81,7 @@ export default function App() {
                     </div>
                     <section className="absolute w-40 h-3/4 px-2 py-2">
                         <h2 className="text-xl text-blue-500">Online FRIENZ</h2>
-                        <OnlineUsers/>
+                        <OnlineUsers />
                     </section>
                     <section className="flex py-4 w-full justify-center min-h-min">
                         <Route exact path="/">
@@ -90,8 +92,11 @@ export default function App() {
                         <Route exact path="/users">
                             <FindPeople />
                         </Route>
-                        <Route path="/users/:userId">
+                        <Route exact path="/users/:userId">
                             <OtherProfile id={userProfile.id} />
+                        </Route>
+                        <Route path="/users/:userId/dm">
+                            <DirectMessage/>
                         </Route>
                         <Route exact path="/friends">
                             <Friends />

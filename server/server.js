@@ -257,12 +257,38 @@ io.on("connection", async (socket) => {
             .then((result) => result.rows);
         io.emit("messages", message);
     });
+    let receiverId;
+    socket.on("get-all-direct-messages", async (paramsId) => {
+        receiverId = paramsId;
+        const messages = await db
+            .findDirectMessages(paramsId, userId)
+            .then((result) => result.rows);
+
+        socket.emit("direct-messages", messages);
+    });
+    socket.on("new-direct-message", async (text) => {
+        const { first_name, profilepic } = await db
+            .getUserById(userId)
+            .then((result) => result.rows[0]);
+
+        let message = await db
+            .addDirectMessage(userId, receiverId, text, profilepic, first_name)
+            .then((result) => result.rows[0]);
+
+        io.emit("direct-messages", message);
+    });
 
     // this will run every time a socket disconnect
-    socket.on("disconnect", () => {
+    socket.on("disconnect", async () => {
         console.log(
             `Socket with id: ${socket.id} and userId:${userId} just disconnected!`
         );
-        onlineUsers = onlineUsers.filter((element) => element.id != userId);
+        onlineUsers = await onlineUsers.filter(
+            (element) => element.id != userId
+        );
+        const onlineUsersInfo = await db
+            .getUsersByIds(onlineUsers.map((e) => e.id))
+            .then((result) => result.rows);
+        io.emit("online-users", onlineUsersInfo);
     });
 });

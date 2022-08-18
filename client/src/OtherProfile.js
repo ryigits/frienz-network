@@ -1,7 +1,8 @@
 import { useParams } from "react-router";
 import { useEffect, useState } from "react";
-import { Card, Label } from "flowbite-react";
+import { Card, Label,Button} from "flowbite-react";
 import CloseFriend from "./CloseFriend";
+import { Link } from "react-router-dom";
 
 export default function OtherProfile({id}) {
     const { userId } = useParams();
@@ -38,6 +39,7 @@ export default function OtherProfile({id}) {
                             {userProfile.bio ? userProfile.bio : "No bio added"}
                         </p>
                         <CloseFriend userId={userId} />
+                        <Link to={`/users/${userId}/dm`}><Button color="info">Direct Message</Button></Link>
                     </Card>
                 </div>
             )}

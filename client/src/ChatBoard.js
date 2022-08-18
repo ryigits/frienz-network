@@ -6,6 +6,7 @@ export default function ChatBoard({ lastMessages }) {
     useEffect(() => {
         messagesEndRef.current.scrollTop = 0;
     }, [lastMessages]);
+
     return (
         <>
             <div
@@ -16,7 +17,6 @@ export default function ChatBoard({ lastMessages }) {
                     lastMessages.map((message, index) => (
                         <div key={index}>
                             <ChatMessage message={message}/>
-                            
                         </div>
                     ))}
             </div>

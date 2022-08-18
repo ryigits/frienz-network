@@ -165,3 +165,24 @@ module.exports.getUsersByIds = (arrOfUserIds) => {
     const params = [arrOfUserIds];
     return db.query(query, params);
 };
+
+module.exports.addDirectMessage = (
+    sender_id,
+    receiver_id,
+    text,
+    profilepic,
+    first_name
+) => {
+    return db.query(
+        `INSERT INTO directmessages (sender_id,receiver_id,text,profilepic,first_name) VALUES ($1,$2,$3,$4,$5) RETURNING *`,
+        [sender_id, receiver_id, text, profilepic, first_name]
+    );
+};
+
+module.exports.findDirectMessages = (user1, user2) => {
+    const query = `
+        SELECT * FROM directmessages
+        WHERE (sender_id = $1 AND receiver_id = $2)
+        OR (sender_id = $2 AND receiver_id = $1) ORDER BY created_at DESC`;
+    return db.query(query, [user1, user2]);
+};
