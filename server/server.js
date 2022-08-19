@@ -149,11 +149,10 @@ app.post("/register.json", (req, res) => {
     bcrypt.hash(password).then((password_hash) => {
         db.addUser(first, last, email, password_hash)
             .then((user_id) => {
-                let id = user_id.rows[0].user_id;
-                req.session.id = id;
+                req.session.id = user_id.rows[0].id;
                 res.json({
                     success: true,
-                    id: id,
+                    id: user_id.rows[0].id,
                 });
             })
             .catch(() => {
@@ -203,7 +202,14 @@ app.post("/login", (req, res) => {
                     success: true,
                 });
             });
+        }else{
+            res.json({
+                message:"wrong email or password",
+                success: false,
+            });
         }
+    }).catch(err=>{
+        console.log(err);
     });
 });
 

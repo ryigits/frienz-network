@@ -10,7 +10,9 @@ export default function Bio() {
         fetch("/profile")
             .then((data) => data.json())
             .then((userData) => {
-                setBioData(userData.bio);
+                userData.bio === null
+                    ? setBioData("Please Describe Yourself")
+                    : setBioData(userData.bio);
             });
     }, []);
 
@@ -21,7 +23,7 @@ export default function Bio() {
                 "Content-Type": "application/json",
                 // 'Content-Type': 'application/x-www-form-urlencoded',
             },
-            body: JSON.stringify({bioData}),
+            body: JSON.stringify({ bioData }),
         })
             .then((data) => data.json())
             .then(() => {
