@@ -13,14 +13,15 @@ app.use(express.json());
 
 ////// this is our socket.io boilerplate  //////
 const server = require("http").Server(app);
+let localOrHeroku;
+if (process.env.NODE_ENV === "production") {
+    localOrHeroku = "https://frienz-network.herokuapp.com";
+} else {
+    localOrHeroku = "http://localhost:3000";
+}
 const io = require("socket.io")(server, {
     allowRequest: (req, callback) =>
-        callback(
-            null,
-            req.headers.referer.startsWith(
-                "https://frienz-network.herokuapp.com"
-            )
-        ),
+        callback(null, req.headers.referer.startsWith(localOrHeroku)),
 });
 //////////////////////////////////////////////
 
