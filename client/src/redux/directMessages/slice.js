@@ -1,7 +1,7 @@
 export default function directMessagesReducer(directMessages = [], action) {
     switch (action.type) {
                     case "direct-messages-received":
-                        if (action.payload.messages.length > 1) {
+                        if (action.payload.messages.length > 0) {
                             return action.payload.messages;
                         } else {
                             return [

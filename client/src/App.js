@@ -30,7 +30,7 @@ export default function App() {
     return (
         <Flowbite theme={theme}>
             <BrowserRouter>
-                <div className="w-screen h-screen bg-sky-50">
+                <div className="w-screen min-h-screen bg-sky-50">
                     <div className="flex flex-row w-screen justify-between h-20 border-4 border-b-amber-300">
                         <div className="mt-px">
                             <Link to="/">

@@ -105,6 +105,8 @@ module.exports.getUserById = (id) => {
     return db.query(`SELECT * FROM users WHERE id=$1;`, [id]);
 };
 
+
+
 module.exports.addCloseFriend = (sender_id, receiver_id) => {
     return db.query(
         `INSERT INTO closefriends (sender_id,receiver_id) VALUES ($1,$2) RETURNING *`,
@@ -145,6 +147,14 @@ JOIN closefriends
 ON (arefriend = true AND receiver_id = $1 AND users.id = closefriends.sender_id)
 OR (arefriend = true AND sender_id = $1 AND users.id = closefriends.receiver_id)
 OR (arefriend = false AND receiver_id = $1 AND users.id = closefriends.sender_id)`;
+    return db.query(query, [id]);
+};
+
+module.exports.findCloseFriendsById = (id) => {
+    const query = `
+        SELECT * FROM closefriends
+        WHERE (sender_id = $1)
+        OR (receiver_id = $1)`;
     return db.query(query, [id]);
 };
 

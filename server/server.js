@@ -117,6 +117,22 @@ app.get("/users/:id.json", (req, res) => {
         });
     }
 });
+app.get("/friends/:id.json", async (req, res) => {
+    const { id } = req.params;
+    const _friends = await db
+        .findCloseFriendsById(id)
+        .then((result) => result.rows);
+    const friends = _friends.filter((e) => e.arefriend);
+    const friendsId = friends
+        .filter((e) => e.sender_id != +id)
+        .map((e) => e.sender_id);
+    const friendsId2 = friends
+        .filter((e) => e.receiver_id != +id)
+        .map((e) => e.receiver_id);
+    const finalIds = [...friendsId, ...friendsId2];
+    const result = await db.getUsersByIds(finalIds).then((data) => data.rows);
+    res.json(result);
+});
 
 app.get("/closefriend/:id.json", (req, res) => {
     const user1 = req.session.id;
