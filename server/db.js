@@ -160,8 +160,7 @@ module.exports.addNewMessages = (id, first_name, profilepic, text) => {
 };
 
 module.exports.getUsersByIds = (arrOfUserIds) => {
-    const query = `SELECT id, first_name, last_name, profilepic
-                  FROM users WHERE id = ANY($1)`;
+    const query = `SELECT id, first_name, last_name, profilepic FROM users WHERE id = ANY($1)`;
     const params = [arrOfUserIds];
     return db.query(query, params);
 };
@@ -185,4 +184,8 @@ module.exports.findDirectMessages = (user1, user2) => {
         WHERE (sender_id = $1 AND receiver_id = $2)
         OR (sender_id = $2 AND receiver_id = $1) ORDER BY created_at DESC`;
     return db.query(query, [user1, user2]);
+};
+
+module.exports.deleteUserByEmail = (email) => {
+    return db.query(`DELETE FROM users WHERE email=$1 RETURNING *;`, [email]);
 };

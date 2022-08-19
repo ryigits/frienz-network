@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Chat from "./Chat";
 import OnlineUsers from "./OnlineUsers";
 import DirectMessage from "./DirectMessage";
+import DeleteUser from "./DeleteUser";
 
 
 export default function App() {
@@ -103,6 +104,9 @@ export default function App() {
                         </Route>
                         <Route exact path="/chat">
                             <Chat />
+                        </Route>
+                        <Route path="/deleteuser/">
+                            <DeleteUser userProfile={userProfile} />
                         </Route>
                     </section>
                 </div>

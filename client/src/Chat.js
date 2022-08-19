@@ -1,21 +1,25 @@
-import { Textarea, Button, Label } from "flowbite-react";
+import { Textarea, Button, Label,Alert } from "flowbite-react";
 // import { HiArrowNarrowRight } from "react-icons/hi";
 import ChatBoard from "./ChatBoard";
 import { useSelector } from "react-redux";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { socket } from "./socket";
 
 export default function Chat() {
     const textareaRef = useRef();
     // console.count("rendered");
     const lastMessages = useSelector((state) => state.messages);
-
+    const [error, setError] = useState(false);
 
     const sendMessage = () => {
         const text = textareaRef.current.value;
-        socket.emit("new-message", text);
-        textareaRef.current.value = "";
-        textareaRef.current.focus();
+        if (text.length > 24) {
+            setError(true);
+        } else {
+            socket.emit("new-message", text);
+            textareaRef.current.value = "";
+            textareaRef.current.focus();
+        }
     };
 
     const onChange = (e) => {
@@ -23,8 +27,6 @@ export default function Chat() {
             sendMessage();
         }
     };
-
-
 
     return (
         <>
@@ -42,6 +44,7 @@ export default function Chat() {
                 <div className="self-center">
                     <Button onClick={sendMessage}>Send</Button>
                 </div>
+                <div>{error && <Alert color="failure">Please Type Less</Alert>}</div>
             </div>
         </>
     );

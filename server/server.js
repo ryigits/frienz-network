@@ -194,23 +194,25 @@ app.post("/resetPasswordWithCode", (req, res) => {
 
 app.post("/login", (req, res) => {
     const { email, password } = req.body;
-    db.authUser(email, password).then((result) => {
-        if (result) {
-            db.getUserByEmail(email).then((user) => {
-                req.session.id = user.id;
-                res.json({
-                    success: true,
+    db.authUser(email, password)
+        .then((result) => {
+            if (result) {
+                db.getUserByEmail(email).then((user) => {
+                    req.session.id = user.id;
+                    res.json({
+                        success: true,
+                    });
                 });
-            });
-        }else{
-            res.json({
-                message:"wrong email or password",
-                success: false,
-            });
-        }
-    }).catch(err=>{
-        console.log(err);
-    });
+            } else {
+                res.json({
+                    message: "wrong email or password",
+                    success: false,
+                });
+            }
+        })
+        .catch((err) => {
+            console.log(err);
+        });
 });
 
 app.post("/image", uploader.single("photo"), s3.upload, (req, res) => {
@@ -222,6 +224,18 @@ app.post("/image", uploader.single("photo"), s3.upload, (req, res) => {
                 url: url,
             });
         });
+    }
+});
+
+app.post("/deleteuser", async (req, res) => {
+    const { email } = req.body;
+    const match =  await db.getUserByEmail(email);
+    if (match.id === req.session.id) {
+        await db.deleteUserByEmail(email).then((data) => data.rows);
+        req.session = null;
+        res.json({ success: true });
+    } else {
+        res.json({ success: false });
     }
 });
 
@@ -271,7 +285,6 @@ io.on("connection", async (socket) => {
             .then((result) => result.rows);
         io.emit("messages", message);
     });
-
 
     socket.on("get-all-direct-messages", async (paramsId) => {
         const messages = await db
