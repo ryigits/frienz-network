@@ -18,8 +18,7 @@ const io = require("socket.io")(server, {
         callback(
             null,
             req.headers.referer.startsWith(
-                "http://localhost:3000" ||
-                    "https://frienz-network.herokuapp.com/"
+                "https://frienz-network.herokuapp.com"
             )
         ),
 });
@@ -235,7 +234,7 @@ app.post("/image", uploader.single("photo"), s3.upload, (req, res) => {
 
 app.post("/deleteuser", async (req, res) => {
     const { email } = req.body;
-    const match =  await db.getUserByEmail(email);
+    const match = await db.getUserByEmail(email);
     if (match.id === req.session.id) {
         await db.deleteUserByEmail(email).then((data) => data.rows);
         req.session = null;
