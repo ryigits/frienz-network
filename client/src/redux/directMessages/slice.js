@@ -4,12 +4,13 @@ export default function directMessagesReducer(directMessages = [], action) {
                         if (action.payload.messages.length > 1) {
                             return action.payload.messages;
                         } else {
-                            console.log(action.payload.messages);
                             return [
                                 action.payload.messages,
                                 ...directMessages,
                             ];
                         }
+                    case "clear-messages":
+                        return (directMessages = []);
                     default:
                         return directMessages;
     }
@@ -19,5 +20,11 @@ export function receiveDirectMessages(messages) {
     return {
         type: "direct-messages-received",
         payload:  {messages} ,
+    };
+}
+
+export function clearDirectMessages() {
+    return {
+        type: "clear-messages",
     };
 }

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import ChatMessage from "./ChatMessage";
-export default function ChatBoard({ lastMessages }) {
+export default function ChatBoard({ lastMessages,historicalMessages}) {
     const messagesEndRef = useRef();
 
     useEffect(() => {
@@ -16,7 +16,13 @@ export default function ChatBoard({ lastMessages }) {
                 {lastMessages &&
                     lastMessages.map((message, index) => (
                         <div key={index}>
-                            <ChatMessage message={message}/>
+                            <ChatMessage message={message} />
+                        </div>
+                    ))}
+                {historicalMessages &&
+                    historicalMessages.map((message) => (
+                        <div key={message.id}>
+                            <ChatMessage message={message} />
                         </div>
                     ))}
             </div>

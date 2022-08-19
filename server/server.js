@@ -73,6 +73,14 @@ app.get("/closefriends/getall", async (req, res) => {
     res.json(allFriend.rows);
 });
 
+app.get("/getalldirectmessages/:userId", async (req, res) => {
+    const { userId } = req.params;
+    const messages = await db
+        .findDirectMessages(userId, req.session.id)
+        .then((result) => result.rows);
+    res.json(messages);
+});
+
 app.get("/recentusers", (req, res) => {
     db.getRecentUsers().then((users) => {
         const filteredUser = users.rows.filter(
@@ -257,25 +265,35 @@ io.on("connection", async (socket) => {
             .then((result) => result.rows);
         io.emit("messages", message);
     });
-    let receiverId;
+
+
     socket.on("get-all-direct-messages", async (paramsId) => {
-        receiverId = paramsId;
         const messages = await db
             .findDirectMessages(paramsId, userId)
             .then((result) => result.rows);
 
         socket.emit("direct-messages", messages);
     });
-    socket.on("new-direct-message", async (text) => {
+    socket.on("new-direct-message", async (message) => {
         const { first_name, profilepic } = await db
             .getUserById(userId)
             .then((result) => result.rows[0]);
 
-        let message = await db
-            .addDirectMessage(userId, receiverId, text, profilepic, first_name)
+        let directMessage = await db
+            .addDirectMessage(
+                userId,
+                message.receiverId,
+                message.text,
+                profilepic,
+                first_name
+            )
             .then((result) => result.rows[0]);
-
-        io.emit("direct-messages", message);
+        await onlineUsers.forEach((e) => {
+            if (e.id === Number(message.receiverId)) {
+                io.to(e.socket).emit("direct-messages", directMessage);
+            }
+        });
+        socket.emit("direct-messages", directMessage);
     });
 
     // this will run every time a socket disconnect
