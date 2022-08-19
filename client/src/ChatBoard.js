@@ -11,7 +11,7 @@ export default function ChatBoard({ lastMessages,historicalMessages}) {
         <>
             <div
                 ref={messagesEndRef}
-                className="w-full overflow-y-auto bg-slate-200 h-60 border-4 border-red-400"
+                className="w-full overflow-y-auto bg-slate-200 h-80 border-4 border-red-400"
             >
                 {lastMessages &&
                     lastMessages.map((message, index) => (

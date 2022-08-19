@@ -31,12 +31,12 @@ export default function App() {
             <BrowserRouter>
                 <div className="w-screen h-screen bg-sky-50">
                     <div className="flex flex-row w-screen justify-between h-20 border-4 border-b-amber-300">
-                        <div>
+                        <div className="mt-px">
                             <Link to="/">
                                 <img
-                                    width="88px"
-                                    className=""
-                                    src="./frienz.png"
+                                    width="200px"
+                                    className="mt-1"
+                                    src="https://frienznetwork.s3.amazonaws.com/R6Mhxdxv17EXFgHv.gif"
                                 ></img>
                             </Link>
                         </div>
@@ -96,7 +96,7 @@ export default function App() {
                             <OtherProfile id={userProfile.id} />
                         </Route>
                         <Route path="/users/:userId/dm">
-                            <DirectMessage/>
+                            <DirectMessage />
                         </Route>
                         <Route exact path="/friends">
                             <Friends />
