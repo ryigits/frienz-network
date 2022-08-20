@@ -13,7 +13,7 @@ export default function Chat() {
 
     const sendMessage = () => {
         const text = textareaRef.current.value;
-        if (text.length > 24) {
+        if (text.length > 140) {
             setError(true);
         } else {
             socket.emit("new-message", text);

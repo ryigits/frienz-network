@@ -70,7 +70,7 @@ export default function App() {
                                         : "text-2xl font-medium text-gray-500"
                                 }
                             >
-                                Chat
+                                ChatBoard
                             </NavLink>
                         </div>
                         <Route path="/">
@@ -102,7 +102,7 @@ export default function App() {
                             <OtherProfile id={userProfile.id} />
                         </Route>
                         <Route path="/users/:userId/dm">
-                            <DirectMessage/>
+                            <DirectMessage />
                         </Route>
                         <Route exact path="/friends">
                             <Friends />

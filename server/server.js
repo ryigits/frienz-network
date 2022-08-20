@@ -341,7 +341,6 @@ io.on("connection", async (socket) => {
                 ...directMessage,
                 dm: true,
             });
-            socket.leave(receiverSocketId);
         } else {
             socket.emit("direct-messages", directMessage);
         }

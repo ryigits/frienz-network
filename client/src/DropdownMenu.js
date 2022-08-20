@@ -3,14 +3,16 @@ import { useState, useEffect } from "react";
 import Uploader from "./Uploader";
 import { Link, useRouteMatch } from "react-router-dom";
 import { useSelector } from "react-redux";
-
+import { clearNotification } from "./redux/notification/slice";
 import Notification from "./Notification";
+import { useDispatch } from "react-redux";
 
 export default function DropdownMenu({ userProfile, setUserProfile }) {
     const match = useRouteMatch("/users/:id/dm");
     const [isUploaderOpen, setIsUploaderOpen] = useState(false);
     const [notificationArrived, setNotificationArrived] = useState("");
     const notifications = useSelector((state) => state.notifications);
+    const dispatch = useDispatch();
 
     const showUploader = () => {
         setIsUploaderOpen(isUploaderOpen === false ? true : false);
@@ -21,8 +23,9 @@ export default function DropdownMenu({ userProfile, setUserProfile }) {
             if (!match) {
                 setNotificationArrived("busy");
             } else {
-                if (!+match.params.id === notifications[0].receiver_id)
-                    setNotificationArrived("");
+                console.log(match);
+                if (+match.params.id !== notifications[0].receiver_id)
+                    dispatch(clearNotification());
             }
         } else {
             setNotificationArrived("");
@@ -80,7 +83,10 @@ export default function DropdownMenu({ userProfile, setUserProfile }) {
                         </span>
                     </Link>
                 </Dropdown.Header>
-                <Notification notifications={notifications} />
+                <Notification
+                    notifications={notifications}
+                    id={userProfile.id}
+                />
                 <Dropdown.Item onClick={showUploader}>
                     Change Picture
                 </Dropdown.Item>

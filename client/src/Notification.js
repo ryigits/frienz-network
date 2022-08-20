@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { clearNotification } from "./redux/notification/slice";
 import { useDispatch } from "react-redux";
 
-export default function Notification({ notifications }) {
+export default function Notification({ notifications,id }) {
 
     const dispatch = useDispatch();
     const onClick = () => {
@@ -24,7 +24,7 @@ export default function Notification({ notifications }) {
     };
     return (
         <>
-            {notifications?.map((notification, index) => (
+            {notifications?.filter(e=>e.sender_id!=id).map((notification, index) => (
                 <Dropdown.Item key={index}>
                     <div className="text-rose-500">
                         <Link
