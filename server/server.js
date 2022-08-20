@@ -332,6 +332,11 @@ io.on("connection", async (socket) => {
         await onlineUsers.forEach((e) => {
             if (e.id === Number(message.receiverId)) {
                 io.to(e.socket).emit("direct-messages", directMessage);
+                console.log(directMessage);
+                io.to(e.socket).emit("direct-message-notification", {
+                    ...directMessage,
+                    dm: true,
+                });
             }
         });
         socket.emit("direct-messages", directMessage);

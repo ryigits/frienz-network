@@ -1,7 +1,7 @@
 export default function notificationReducer(notifications = [], action) {
     switch (action.type) {
-                    case "new-friendship-request":
-                        return [action.payload.userData, ...notifications];
+                    case "new-notification":
+                        return [action.payload.notification, ...notifications];
                     case "clear-notification":
                         return (notifications = []);
                     default:
@@ -9,10 +9,10 @@ export default function notificationReducer(notifications = [], action) {
     }
 }
 
-export function receiveFriendRequest(userData) {
+export function receiveNotification(notification) {
     return {
-        type: "new-friendship-request",
-        payload: { userData },
+        type: "new-notification",
+        payload: { notification },
     };
 }
 

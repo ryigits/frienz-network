@@ -1,12 +1,13 @@
 import { Avatar, Dropdown } from "flowbite-react";
 import { useState, useEffect } from "react";
 import Uploader from "./Uploader";
-import { Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { clearNotification } from "./redux/notification/slice";
+import { Link, useRouteMatch } from "react-router-dom";
+import { useSelector } from "react-redux";
+
+import Notification from "./Notification";
 
 export default function DropdownMenu({ userProfile, setUserProfile }) {
-    const dispatch = useDispatch();
+    const match = useRouteMatch("/users/:id/dm");
     const [isUploaderOpen, setIsUploaderOpen] = useState(false);
     const [notificationArrived, setNotificationArrived] = useState("");
     const notifications = useSelector((state) => state.notifications);
@@ -16,9 +17,16 @@ export default function DropdownMenu({ userProfile, setUserProfile }) {
     };
 
     useEffect(() => {
-        notifications.length > 0
-            ? setNotificationArrived("busy")
-            : setNotificationArrived("");
+        if (notifications.length > 0) {
+            if (!match) {
+                setNotificationArrived("busy");
+            } else {
+                if (!+match.params.id === notifications[0].receiver_id)
+                    setNotificationArrived("");
+            }
+        } else {
+            setNotificationArrived("");
+        }
     }, [notifications]);
 
     const onLogout = (e) => {
@@ -36,10 +44,6 @@ export default function DropdownMenu({ userProfile, setUserProfile }) {
             .catch((err) => {
                 console.log(err);
             });
-    };
-
-    const onClick = () => {
-        dispatch(clearNotification());
     };
 
     return (
@@ -76,31 +80,16 @@ export default function DropdownMenu({ userProfile, setUserProfile }) {
                         </span>
                     </Link>
                 </Dropdown.Header>
-                {notifications?.map((notification, index) => (
-                    <Dropdown.Item  key={index}>
-                        <div className="text-rose-500">
-                            <Link
-                                onClick={onClick}
-                                to={`/users/${notification.id}`}
-                            >
-                                New friendship request from{" "}
-                                {notification.first_name}
-                            </Link>
-                        </div>
-                    </Dropdown.Item>
-                ))}
+                <Notification notifications={notifications} />
                 <Dropdown.Item onClick={showUploader}>
                     Change Picture
                 </Dropdown.Item>
-                <Dropdown.Item >
+                <Dropdown.Item>
                     <Link to="/deleteuser">Delete Account</Link>
                 </Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item  onClick={onLogout}>
-                    Sign out
-                </Dropdown.Item>
+                <Dropdown.Item onClick={onLogout}>Sign out</Dropdown.Item>
             </Dropdown>
-            
         </div>
     );
 }

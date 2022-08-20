@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 import { receiveMessages } from "./redux/messages/slice";
 import { receiveOnlineUsers } from "./redux/onlineUsers/slice";
 import { receiveDirectMessages } from "./redux/directMessages/slice";
-import { receiveFriendRequest } from "./redux/notification/slice";
+import { receiveNotification } from "./redux/notification/slice";
 export let socket;
 
 export const init = (store) => {
@@ -19,7 +19,10 @@ export const init = (store) => {
             store.dispatch(receiveDirectMessages(data));
         });
         socket.on("Accept Friend", (data) => {
-            store.dispatch(receiveFriendRequest(data));
+            store.dispatch(receiveNotification(data));
+        });
+        socket.on("direct-message-notification", (data) => {
+            store.dispatch(receiveNotification(data));
         });
     }
 };

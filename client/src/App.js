@@ -73,12 +73,14 @@ export default function App() {
                                 Chat
                             </NavLink>
                         </div>
-                        <div className="flex mt-2 h-40 w-20 mr-10">
-                            <DropdownMenu
-                                setUserProfile={setUserProfile}
-                                userProfile={userProfile}
-                            />
-                        </div>
+                        <Route path="/">
+                            <div className="flex mt-2 h-40 w-20 mr-10">
+                                <DropdownMenu
+                                    setUserProfile={setUserProfile}
+                                    userProfile={userProfile}
+                                />
+                            </div>
+                        </Route>
                     </div>
                     <section className="absolute w-40 h-3/4 px-2 py-2">
                         <h2 className="text-xl text-blue-500">Online FRIENZ</h2>
