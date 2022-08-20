@@ -1,5 +1,5 @@
 import { Textarea, Button, Label,Alert } from "flowbite-react";
-// import { HiArrowNarrowRight } from "react-icons/hi";
+
 import ChatBoard from "./ChatBoard";
 import { useSelector } from "react-redux";
 import { useRef, useState } from "react";

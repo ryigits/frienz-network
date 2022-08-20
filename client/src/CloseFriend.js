@@ -1,6 +1,7 @@
 import { Button } from "flowbite-react";
 import { useParams } from "react-router";
 import { useState, useEffect } from "react";
+import { socket } from "./socket";
 
 export default function CloseFriend() {
     const [button, setButton] = useState({});
@@ -46,6 +47,7 @@ export default function CloseFriend() {
             .then((data) => {
                 const currentButton = handleResponse(data);
                 setButton(currentButton);
+                socket.emit(button.text,userId);
             });
     };
 

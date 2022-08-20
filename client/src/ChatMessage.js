@@ -1,10 +1,14 @@
+import { Link } from "react-router-dom";
+
 export default function ChatMessage({ message }) {
     return (
         <>
             <div className="flex flex-row flex-nowrap p-1">
                 <div>
                     {message.profilepic && (
-                        <img width="35px" src={message.profilepic}></img>
+                        <Link to={`/users/${message.sender_id}`}>
+                            <img width="35px" src={message.profilepic}></img>
+                        </Link>
                     )}
                 </div>
                 <div className="flex flex-row p-0.5 grow">
@@ -17,7 +21,10 @@ export default function ChatMessage({ message }) {
                         </div>
                     </div>
                     <div className="text-xs self-end font-extralight italic text-gray-400">
-                        {message.created_at && new Date(message.created_at).toString().slice(0, 24)}
+                        {message.created_at &&
+                            new Date(message.created_at)
+                                .toString()
+                                .slice(0, 24)}
                     </div>
                 </div>
             </div>

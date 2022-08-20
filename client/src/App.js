@@ -96,6 +96,9 @@ export default function App() {
                         <Route exact path="/users/:userId">
                             <OtherProfile id={userProfile.id} />
                         </Route>
+                        <Route exact path="/users/others/:userId">
+                            <OtherProfile id={userProfile.id} />
+                        </Route>
                         <Route path="/users/:userId/dm">
                             <DirectMessage />
                         </Route>

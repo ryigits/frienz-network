@@ -285,9 +285,9 @@ io.on("connection", async (socket) => {
     // );
 
     const onlineUser = { id: userId, socket: socket.id };
-    if (onlineUsers.every((element) => element.id !== userId)) {
-        onlineUsers.push(onlineUser);
-    }
+    // if (onlineUsers.every((element) => element.id !== userId)) {
+    // } not necessary !!!!
+    onlineUsers.push(onlineUser);
 
     console.log("Currently Online Users", onlineUsers);
     const onlineUsersInfo = await db
@@ -296,6 +296,7 @@ io.on("connection", async (socket) => {
     io.emit("online-users", onlineUsersInfo);
 
     const messageArray = await db.getRecentMessages().then((data) => data.rows);
+    console.log(messageArray);
     socket.emit("messages", messageArray);
     socket.on("new-message", async (text) => {
         const { first_name, profilepic } = await db
@@ -335,6 +336,18 @@ io.on("connection", async (socket) => {
             }
         });
         socket.emit("direct-messages", directMessage);
+    });
+
+    socket.on("Add to Friend", async (friendUserId) => {
+        onlineUsers.forEach(async (e) => {
+            if (e.id === +friendUserId) {
+                // eslint-disable-next-line no-unused-vars
+                const { email, password_hash, bio, ...userData } = await db
+                    .getUserById(userId)
+                    .then((data) => data.rows[0]);
+                io.to(e.socket).emit("Accept Friend", userData);
+            }
+        });
     });
 
     // this will run every time a socket disconnect
