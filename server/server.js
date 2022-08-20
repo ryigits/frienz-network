@@ -296,7 +296,6 @@ io.on("connection", async (socket) => {
     io.emit("online-users", onlineUsersInfo);
 
     const messageArray = await db.getRecentMessages().then((data) => data.rows);
-    console.log(messageArray);
     socket.emit("messages", messageArray);
     socket.on("new-message", async (text) => {
         const { first_name, profilepic } = await db

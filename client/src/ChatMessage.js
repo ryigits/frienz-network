@@ -20,7 +20,7 @@ export default function ChatMessage({ message }) {
                             {message.text}
                         </div>
                     </div>
-                    <div className="text-xs self-end font-extralight italic text-gray-400">
+                    <div className="text-xs self-end font-extralight italic text-gray-400 mr-2">
                         {message.created_at &&
                             new Date(message.created_at)
                                 .toString()

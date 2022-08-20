@@ -4,11 +4,11 @@ import { Card, Label, Button } from "flowbite-react";
 import CloseFriend from "./CloseFriend";
 import { Link } from "react-router-dom";
 import OtherProfileFriends from "./OtherProfileFriends";
+import { Redirect } from "react-router-dom";
 
 export default function OtherProfile({ id }) {
     const { userId } = useParams();
     const [userProfile, setUserProfile] = useState({});
-
 
     useEffect(() => {
         fetch(`/users/${userId}.json`)
@@ -18,13 +18,11 @@ export default function OtherProfile({ id }) {
             });
     }, []);
 
-
-
     return (
         <>
             <div className="flex-row">
                 {id == Number(userId) ? (
-                    <div>Forbidden You are not Otherz</div>
+                    <Redirect to="/" />
                 ) : (
                     <div className="px-2">
                         <Card horizontal={true} imgSrc={userProfile.profilepic}>
@@ -49,7 +47,7 @@ export default function OtherProfile({ id }) {
                                 <Button color="info">Direct Message</Button>
                             </Link>
                         </Card>
-                        
+
                         <OtherProfileFriends userId={userId} />
                     </div>
                 )}
