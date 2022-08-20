@@ -315,6 +315,7 @@ io.on("connection", async (socket) => {
 
         socket.emit("direct-messages", messages);
     });
+
     socket.on("new-direct-message", async (message) => {
         const { first_name, profilepic } = await db
             .getUserById(userId)
@@ -329,17 +330,23 @@ io.on("connection", async (socket) => {
                 first_name
             )
             .then((result) => result.rows[0]);
-        await onlineUsers.forEach((e) => {
-            if (e.id === Number(message.receiverId)) {
-                io.to(e.socket).emit("direct-messages", directMessage);
-                console.log(directMessage);
-                io.to(e.socket).emit("direct-message-notification", {
-                    ...directMessage,
-                    dm: true,
-                });
-            }
-        });
-        socket.emit("direct-messages", directMessage);
+
+        if (onlineUsers.find((e) => e.id === Number(message.receiverId))) {
+            const receiverSocketId = await onlineUsers.find(
+                (e) => e.id === Number(message.receiverId)
+            ).socket;
+            socket.join(receiverSocketId);
+            io.to(receiverSocketId).emit("direct-messages", directMessage);
+            io.to(receiverSocketId).emit("direct-message-notification", {
+                ...directMessage,
+                dm: true,
+            });
+            socket.leave(receiverSocketId);
+        } else {
+            socket.emit("direct-messages", directMessage);
+        }
+
+        // io.to(receiverSocketId).emit(directMessage);
     });
 
     socket.on("Add to Friend", async (friendUserId) => {
