@@ -25,8 +25,8 @@ CREATE TABLE reset_codes(
 
 CREATE TABLE closefriends(
     id SERIAL PRIMARY KEY,
-    sender_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    receiver_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    sender_id INTEGER NOT NULL,
+    receiver_id INTEGER NOT NULL REFERENCES users(id)ON DELETE CASCADE,
     accepted BOOLEAN DEFAULT FALSE,
     arefriend BOOLEAN DEFAULT FALSE, 
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -35,7 +35,7 @@ CREATE TABLE closefriends(
 
 CREATE TABLE chatboard(
     id SERIAL PRIMARY KEY,
-    sender_id INTEGER NOT NULL REFERENCES users(id) ,
+    sender_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE ,
     first_name VARCHAR DEFAULT NULL,
     profilepic VARCHAR DEFAULT NULL,
     text VARCHAR NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE chatboard(
 
 CREATE TABLE directmessages(
     id SERIAL PRIMARY KEY,
-    sender_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    sender_id INTEGER NOT NULL ,
     receiver_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     text VARCHAR NOT NULL,
     profilepic VARCHAR,
