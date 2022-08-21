@@ -23,9 +23,14 @@ export default function DropdownMenu({ userProfile, setUserProfile }) {
             if (!match) {
                 setNotificationArrived("busy");
             } else {
-                console.log(match);
-                if (+match.params.id !== notifications[0].receiver_id)
+                if (
+                    +match.params.id === notifications[0].sender_id ||
+                    +match.params.id === notifications[0].receiver_id
+                ) {
                     dispatch(clearNotification());
+                } else {
+                    setNotificationArrived("busy");
+                }
             }
         } else {
             setNotificationArrived("");

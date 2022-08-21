@@ -102,7 +102,7 @@ export default function App() {
                             <OtherProfile id={userProfile.id} />
                         </Route>
                         <Route path="/users/:userId/dm">
-                            <DirectMessage />
+                            <DirectMessage id={userProfile.id} />
                         </Route>
                         <Route exact path="/friends">
                             <Friends />

@@ -8,7 +8,7 @@ import ChatBoard from "./ChatBoard";
 import { clearDirectMessages } from "./redux/directMessages/slice";
 import { useDispatch } from "react-redux";
 
-export default function DirectMessage() {
+export default function DirectMessage({ id }) {
     const dispatch = useDispatch();
     const textareaRef = useRef();
     const directMessages = useSelector((state) => state.directMessages);
@@ -27,7 +27,6 @@ export default function DirectMessage() {
         textareaRef.current.focus();
     };
 
-
     const onChange = (e) => {
         if (e.keyCode == 13 && !e.shiftKey) {
             sendMessage();
@@ -38,7 +37,12 @@ export default function DirectMessage() {
         <>
             <div className="flex w-6/12 flex-col space-y-2">
                 <ChatBoard
-                    lastMessages={directMessages}
+                    lastMessages={directMessages.filter(function (message) {
+                        return (
+                            message.sender_id === id ||
+                            message.sender_id === +userId
+                        );
+                    })}
                 />
                 <div className="mb-2 block">
                     <Label htmlFor="textarea" value="Your message" />
